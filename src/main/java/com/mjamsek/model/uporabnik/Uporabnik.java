@@ -37,6 +37,9 @@ public class Uporabnik {
 	@Column(name="aktiven")
 	private int aktiven;
 	
+	@Column(name="email")
+	private String email;
+	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "upb_vloge", joinColumns = @JoinColumn(name = "upb_id"), inverseJoinColumns = @JoinColumn(name = "vloga_id"))
 	private Set<Vloga> vloge;
@@ -47,6 +50,14 @@ public class Uporabnik {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getUporabniskoIme() {
