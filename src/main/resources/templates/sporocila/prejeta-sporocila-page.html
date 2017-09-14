@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{sporocila.prejeta.title}"></title>
+		<style>
+			.neprebrano {
+				background-color : #e6ffe6;
+			}
+			td {
+				padding : 10px;
+			}
+			tr:hover {
+				background-color: #ccffff
+			}
+			th, td {
+			    border-bottom: 1px solid #ddd;
+			}
+		</style>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<div id="msg_navbar">
+				<a href="/sporocila/poslano" th:text="#{sporocila.poslano}">Poslano</a> | <a href="/sporocila/prejeto" th:text="#{sporocila.prejeto}">Prejeto</a> | <a href="/sporocila/novo" th:text="#{sporocila.nova}">Novo</a>
+			</div>
+			<h3 th:text="#{sporocila.prejeta.title}">Prejeta sporočila</h3>
+			<table>
+				<tr>
+					<th style="padding-right:20em" th:text="#{sporocila.prejeta.zadeva}">Zadeva</th>
+					<th style="padding-right:10em" th:text="#{sporocila.prejeta.posiljatelj}">Pošiljatelj</th>
+					<th th:text="#{sporocila.prejeta.poslano}">Poslano</th>
+				</tr>
+				<tr th:each="item : ${prejeta}" th:classappend="(${item.status} == 0)? neprebrano">
+					<td><a th:href="@{'/sporocila/read/' + ${item.id}}"> <strong th:if="${item.status} == 0" th:text="${item.zadeva}"></strong><span th:if="${item.status} != 0" th:text="${item.zadeva}"></span> </a></td>
+					<td th:text="${item.avtor.ime}"></td>
+					<td th:text="${#dates.format(item.poslano, 'dd.MM.yyyy HH:mm')}"></td>
+				</tr>
+			</table>
+		</section>
+	</body>
+</html>

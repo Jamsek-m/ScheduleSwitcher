@@ -72,12 +72,12 @@
 		<div class="col-sm-2">
             <nav class="nav-sidebar">
                 <ul class="nav">
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="javascript:;">link1</a></li>
+                    <li class="active"><a href="/" th:text="#{webpage.nav.home}"></a></li>
+                    <li><a href="/sporocila/prejeto" th:text="#{webpage.nav.sporocila}"></a></li>
                     <li><a href="javascript:;">link2</a></li>
                     <li><a href="javascript:;">link3</a></li>
                     <li class="nav-divider"></li>
-                    <li><a href="/logout"><i class="glyphicon glyphicon-off"></i> Sign out</a></li>
+                    <li><a href="/logout"><i class="glyphicon glyphicon-off"></i>&#160;<span th:text="#{webpage.nav.logout}"></span></a></li>
                 </ul>
             </nav>
         </div>

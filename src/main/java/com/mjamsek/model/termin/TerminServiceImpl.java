@@ -1,5 +1,6 @@
 package com.mjamsek.model.termin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,16 @@ public class TerminServiceImpl implements TerminService {
 	}
 
 	@Override
-	public List<Termin> poisciIzbraneTermine(DanUra danUra) {
-		return termRepo.findByCasAndDan(danUra.getUra(), danUra.getDan());
+	public List<Termin> poisciIzbraneTermine(List<DanUra> termini) {
+		List<Termin> rezultat = new ArrayList<Termin>();
+		
+		for(DanUra du : termini) {
+			List<Termin> vmesniRezultat = termRepo.findByCasAndDan(du.getUra(), du.getDan());
+			if(!vmesniRezultat.isEmpty()) {
+				rezultat.addAll(vmesniRezultat);
+			}
+		}
+		return rezultat;
 	}
 
 }

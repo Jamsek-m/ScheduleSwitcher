@@ -6,13 +6,19 @@
   		layout:decorator="Layout">
 
 	<head>
-		<title>Index</title>
+		<title th:text="#{index.title}"></title>
 	</head>
 	
 	<body>
 		<section layout:fragment="content">
-			<p>Index</p>
-		
+			<h2 th:text="#{index.title}"></h2>
+			
+			<div id="neprebrana_sporocila">
+				<h3><span th:text="#{index.unread}"></span>: <span th:text="${#lists.size(neprebrana)}"></span></h3>
+				<div th:each="item : ${neprebrana}">
+					<a th:href="@{'/sporocila/read/' + ${item.id}}" th:text="${item.zadeva}"></a><span style="margin-left:30px" th:text="${item.avtor.ime}"></span><span style="margin-left:30px" th:text="${item.poslano}"></span>
+				</div>
+			</div>
 		</section>
 	
 	

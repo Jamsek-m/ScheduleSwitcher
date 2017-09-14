@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+	<body>
+		<div>
+			<h3>Novo sporočilo iz Menjalca Urnikov</h3>		
+			<div th:text="'Zadeva: ' + ${zadeva}"></div>
+			<div th:text="'Od: ' + ${prejemnik}"></div>
+			<div th:text="${vsebina}" style="margin-top:20px"></div>
+			<div th:text="'Poslano: ' + ${#dates.format(poslano, 'dd.MM.yyyy HH:mm')}"></div>
+		</div>
+	</body>
+</html>

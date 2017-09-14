@@ -31,6 +31,7 @@ public class Sporocilo {
 	@Column(name="poslano")
 	private Date poslano;
 	
+	//status: 0-neprebrano, 1-prebrano
 	@Column(name="status")
 	private int status;
 	

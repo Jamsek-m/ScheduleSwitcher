@@ -22,6 +22,7 @@ public class Termin {
 	@Column(name="termin_id")
 	private long id;
 	
+	//status: 0-ni na voljo, 1-je na voljo
 	@Column(name="status")
 	private int status;
 	

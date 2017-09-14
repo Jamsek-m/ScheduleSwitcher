@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{sporocila.novo.title}"></title>
+		<script>
+			function init(){
+				document.getElementById("prejemnik").addEventListener('input', autocomplete);	
+			}
+			
+			function autocomplete(evt){
+				console.log("NOV VNOS: ", this.value);
+				//TODO: ajax klic na bazo da vrne vsa imena v JSON-u
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<section layout:fragment="content">
+			<div id="msg_navbar">
+				<a href="/sporocila/poslano" th:text="#{sporocila.poslano}">Poslano</a> | <a href="/sporocila/prejeto" th:text="#{sporocila.prejeto}">Prejeto</a> | <a href="/sporocila/novo" th:text="#{sporocila.nova}">Novo</a>
+			</div>
+			<h3 th:text="#{sporocila.novo.title}">Novo sporočilo</h3>
+			<form method="POST" th:action="@{/sporocila/novo}" th:object="${spor}">
+				<div class="form-group" style="width:30em">
+					<label for="prejemnik" th:text="#{sporocila.read.za} + ':'">Za:</label>
+					<input type="text" id="prejemnik" name="prejemnik" th:field="*{prejemnik}" class="form-control" />
+				</div>
+				<div class="form-group" style="width:30em">
+					<label for="zadeva" th:text="#{sporocila.prejeta.zadeva} + ':'">Zadeva:</label>
+					<input type="text" id="zadeva" name="zadeva" th:field="*{zadeva}" class="form-control" />
+				</div>
+				<div class="form-group" style="width:50em">
+					<textarea id="vsebina" name="vsebina" th:field="*{vsebina}" class="form-control" rows="10"></textarea>
+				</div>
+				<button type="submit" class="btn btn-default" th:text="#{sporocila.novo.submit}">Submit</button>
+			</form>
+		</section>
+	</body>
+</html>

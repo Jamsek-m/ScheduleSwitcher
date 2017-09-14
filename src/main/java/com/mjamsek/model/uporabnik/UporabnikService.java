@@ -8,6 +8,8 @@ public interface UporabnikService {
 	
 	public Uporabnik poisciPrekoAktivacijskegaKljuca(int kljuc);
 	
+	public List<Uporabnik> poisciZImenom(String ime);
+	
 	public void shraniUporabnika(Uporabnik up);
 	
 	public List<Uporabnik> poisciVse();
@@ -19,5 +21,7 @@ public interface UporabnikService {
 	public void deaktivirajUporabnika(long id);
 	
 	public void aktivirajUporabnika(long id);
+	
+	public Uporabnik dobiTrenutnegaUporabnika();
 	
 }

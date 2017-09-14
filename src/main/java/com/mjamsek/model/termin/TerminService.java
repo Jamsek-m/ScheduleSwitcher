@@ -9,6 +9,6 @@ public interface TerminService {
 
 	public List<Termin> poisciSvojeTermine(Uporabnik up);
 	
-	public List<Termin> poisciIzbraneTermine(DanUra cas);
+	public List<Termin> poisciIzbraneTermine(List<DanUra> termini);
 	
 }
