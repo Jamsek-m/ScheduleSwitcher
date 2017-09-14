@@ -62,6 +62,15 @@
 						<input type="text" th:field="*{email}" placeholder="E-mail" 
 							id="email" name="email" class="form-control" />
 					</div>
+					<div class="form-group">
+						<label th:if="${#fields.hasErrors('letnik')}" 
+							th:errors="*{letnik}" class="validation-message"></label>
+						<select id="letnik" name="letnik" th:field="*{letnik}" class="form-control">
+							<option value="1" label="1. letnik" selected="selected">1. letnik</option>
+							<option value="2" label="2. letnik" >2. letnik</option>
+							<option value="3" label="3. letnik" >3. letnik</option>
+						</select>
+					</div>
 					<button class="btn btn-default centered" type="submit">Register</button>
 				</form>
 				<a href="/login">Go back to login page</a>

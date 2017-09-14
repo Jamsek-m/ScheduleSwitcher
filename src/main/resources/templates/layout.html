@@ -2,22 +2,72 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" >
 
 	<head>
-		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE" >Schedule Switcher</title>
+		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE" th:text="#{webpage.title}">Schedule Switcher</title>
 		<meta charset="UTF-8"/>
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<style>
-			header {
-				padding-left : 20px;
+			.inline_a {
+				display : inline;
 			}
-		
+			select#jezik {
+			    -webkit-appearance: none;
+			    -moz-appearance: none;
+			    text-indent: 1px;
+			    text-overflow: '';
+			    width:34px;
+			    margin-right : 5px;
+			    margin-top : 5px;
+			}
 		</style>
+		<script>
+			function spremeni_jezik(item){
+				var jezik = item.value;
+				item.setAttribute("style", "background-repeat: no-repeat; background-image : url('/images/" + jezik + "-lang32.png')");
+				window.location.href = window.location.pathname + "?locale=" + jezik;
+			}
+			function init(){
+				var item = document.getElementById("jezik");
+				var jezik = getCookie("locale");
+				item.value = jezik;
+				item.setAttribute("style", "background-repeat: no-repeat; background-image : url('/images/" + jezik + "-lang32.png')");
+			}
+			function getCookie(cname) {
+			    var name = cname + "=";
+			    var decodedCookie = decodeURIComponent(document.cookie);
+			    var ca = decodedCookie.split(';');
+			    for(var i = 0; i <ca.length; i++) {
+			        var c = ca[i];
+			        while (c.charAt(0) == ' ') {
+			            c = c.substring(1);
+			        }
+			        if (c.indexOf(name) == 0) {
+			            return c.substring(name.length, c.length);
+			        }
+			    }
+			    return "";
+			}
+		</script>
 	</head>
 
-	<body>
+	<body onload="init();">
 		<header>
-			<h2>Schedule Switcher</h2>
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="/" th:text="#{webpage.title}"></a>
+					</div>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<select id="jezik" onchange="spremeni_jezik(this)">
+								<option th:style="'background-repeat: no-repeat; background-image:url(' + @{/images/en-lang32.png} + ')'" value="en"></option>
+								<option th:style="'background-repeat: no-repeat; background-image:url(' + @{/images/sl-lang32.png} + ')'" value="sl"></option>
+							</select>
+						</li> 
+				    </ul>
+				</div>
+			</nav>
 		</header>
 		<div class="col-sm-2">
             <nav class="nav-sidebar">
@@ -31,10 +81,6 @@
                 </ul>
             </nav>
         </div>
-		
-		<section class="col-sm-10" layout:fragment="content">
-		</section>
-		
-
+		<section class="col-sm-10" layout:fragment="content"></section>
 	</body>
 </html>

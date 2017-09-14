@@ -75,8 +75,8 @@ public class LoginController {
 			emailServ.posljiEmail(uporabnik.getEmail(), emailContext, "Aktivacija računa", "email/activation-email");
 			
 			model.addAttribute("successMessage", "User has been successfully registered!");
-			model.addAttribute("uporabnik", new Uporabnik());
-			return "redirect:/login";
+			//model.addAttribute("uporabnik", new Uporabnik());
+			return "login/registration-success-page";
 		}
 	}
 	

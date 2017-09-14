@@ -33,6 +33,7 @@ public class UporabnikServiceImpl implements UporabnikService {
 	public void shraniUporabnika(Uporabnik up) {
 		up.setGeslo(bCrypt.encode(up.getGeslo()));
 		up.setAktiven(RegistrationUtility.vrniAktivacijskoStevilko(upRepo));
+		up.setPosljiEmail(true);
 		Vloga uporabnikovaVloga = vlRepo.findByVloga("USER");
 		up.setVloge(new HashSet<Vloga>(Arrays.asList(uporabnikovaVloga)));
 		upRepo.save(up);

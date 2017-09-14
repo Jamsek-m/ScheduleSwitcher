@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.mjamsek.model.predmet.Predmet;
 import com.mjamsek.model.vloga.Vloga;
 
 @Entity
@@ -40,9 +41,19 @@ public class Uporabnik {
 	@Column(name="email")
 	private String email;
 	
+	@Column(name="letnik")
+	private int letnik;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "upb_predmeti", joinColumns = @JoinColumn(name = "upb_id"), inverseJoinColumns = @JoinColumn(name = "predmet_id"))
+	private Set<Predmet> predmeti;
+	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "upb_vloge", joinColumns = @JoinColumn(name = "upb_id"), inverseJoinColumns = @JoinColumn(name = "vloga_id"))
 	private Set<Vloga> vloge;
+	
+	@Column(name = "posljiEmail")
+	private boolean posljiEmail;
 
 	public long getId() {
 		return id;
@@ -100,6 +111,30 @@ public class Uporabnik {
 		this.vloge = vloge;
 	}
 	
+	public int getLetnik() {
+		return letnik;
+	}
+
+	public void setLetnik(int letnik) {
+		this.letnik = letnik;
+	}
+
+	public Set<Predmet> getPredmeti() {
+		return predmeti;
+	}
+
+	public void setPredmeti(Set<Predmet> predmeti) {
+		this.predmeti = predmeti;
+	}
+
+	public boolean isPosljiEmail() {
+		return posljiEmail;
+	}
+
+	public void setPosljiEmail(boolean posljiEmail) {
+		this.posljiEmail = posljiEmail;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

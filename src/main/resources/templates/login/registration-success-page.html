@@ -6,13 +6,13 @@
   		layout:decorator="Layout">
 
 	<head>
-		<title>Activation</title>
+		<title>Register</title>
 	</head>
 	
 	<body>
 		<section layout:fragment="content">
-			<p th:text="${message}"></p>
-			<a href="/login">Prijavi se!</a>
+			<div th:text="${successMessage}"></div>
+			<p>Potrditveno sporočilo je bilo poslano na vaš elektronski naslov. Pred prijavo ga morate aktivirati!</p>
 		</section>
 	</body>
 </html>
