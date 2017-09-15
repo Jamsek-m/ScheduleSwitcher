@@ -17,8 +17,6 @@
 			    text-indent: 1px;
 			    text-overflow: '';
 			    width:34px;
-			    margin-right : 5px;
-			    margin-top : 5px;
 			}
 		</style>
 		<script>
@@ -48,6 +46,15 @@
 			    }
 			    return "";
 			}
+			function loadSettingsPage(){
+				window.location.href="/uporabnik/nastavitve";
+			}
+			function loadAdminPage(){
+				window.location.href="/admin/";
+			}
+			function loadModPage(){
+				window.location.href="/moderator/";
+			}
 		</script>
 	</head>
 
@@ -59,7 +66,25 @@
 						<a class="navbar-brand" href="/" th:text="#{webpage.title}"></a>
 					</div>
 					<ul class="nav navbar-nav navbar-right">
-						<li>
+						<li style="padding-right:20px;padding-top:15px" th:if="${trenutniUporabnik}">
+							<span th:text="${trenutniUporabnik.ime}"></span>
+						</li>
+						<li style="padding-right:20px;padding-top:10px" title="Admin" th:if="${trenutniUporabnik != null && trenutniUporabnik.imaVlogo('ADMIN')}">
+							<a onclick="loadAdminPage()" href="#" style="color:black;padding:0">
+								<span class="glyphicon glyphicon-wrench" style="font-size: 150%;"></span>
+							</a>
+						</li>
+						<li style="padding-right:20px;padding-top:10px" title="Mod" th:if="${trenutniUporabnik != null && trenutniUporabnik.imaVlogo('MOD')}">
+							<a onclick="loadModPage()" href="#" style="color:black;padding:0">
+								<span class="glyphicon glyphicon-pencil" style="font-size: 150%;"></span>
+							</a>
+						</li>
+						<li style="padding-right:20px;padding-top:10px" title="Nastavitve">
+							<a onclick="loadSettingsPage()" href="#" style="color:black;padding:0">
+								<span class="glyphicon glyphicon-cog" style="font-size: 150%;"></span>
+							</a>
+						</li>
+						<li style="margin-right:20px;padding-top:10px">
 							<select id="jezik" onchange="spremeni_jezik(this)">
 								<option th:style="'background-repeat: no-repeat; background-image:url(' + @{/images/en-lang32.png} + ')'" value="en"></option>
 								<option th:style="'background-repeat: no-repeat; background-image:url(' + @{/images/sl-lang32.png} + ')'" value="sl"></option>

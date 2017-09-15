@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script>
+			function init_search_for_mod(){
+				document.getElementById("uporabnik").addEventListener('input', autocomplete);	
+			}
+			function autocomplete(evt){
+				if(this.value.length > 1){
+					var podatki = {query : this.value};
+					var rezultat = [];
+					$.ajax({
+						type : "GET",
+						url : "/sporocila/get-users",
+						dataType : "json",
+						contentType : "application/json",
+						async : true,
+						data : podatki,
+						success : function(res){
+							for(var i = 0; i < res.length; i++){
+								rezultat.push(res[i].ime);
+							}
+							var uporabnik = document.getElementById("uporabnik");
+						    $(uporabnik).autocomplete({
+								source: rezultat
+						    });
+						},
+						error : function(res){
+							console.log("error!");
+						}
+					});
+				}
+			}
+		</script>
+	</head>
+	<body onload="init_search_for_mod()">
+		<section layout:fragment="content">
+			<h3>Moderator homepage</h3>
+			<h4>Uredi</h4>
+			<form method="GET" th:action="@{/moderator/edit/predmet}">
+				<div class="form-group">
+					<label for="predmet">Predmet</label>
+					<select id="predmet" name="predmet" class="form-control">
+						<option value="-1">Izberi predmet</option>
+						<option th:each="predmet : ${vsiPredmeti}" th:value="${predmet.id}" th:text="${predmet.predmet} + ' - ' + ${predmet.enota.naziv}"/>					
+					</select>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			<form method="GET" th:action="@{/moderator/edit/enota}">
+				<div class="form-group">
+					<label for="enota">Predmet</label>
+					<select id="enota" class="form-control">
+						<option value="-1">Izberi enoto</option>
+						<option th:each="enota : ${vseEnote}" th:value="${enota.id}" th:text="${enota.naziv}"/>					
+					</select>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			<hr/>
+			<h4>Dodaj moderatorja</h4>
+			<form method="GET" th:action="@{/moderator/edit/uporabnik}">
+				<div class="form-group">
+					<label for="uporabnik">Uporabnik</label>
+					<input type="text" id="uporabnik" name="uporabnik" class="form-control"/>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+		</section>
+	</body>
+</html>

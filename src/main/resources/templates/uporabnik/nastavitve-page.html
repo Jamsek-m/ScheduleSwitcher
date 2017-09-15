@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+		<script>
+			function checkPassMatch(){
+				var p1 = document.getElementById("geslo1").value;
+				var p2 = document.getElementById("geslo2").value;
+				if(!p1 && !p2){
+					return true;
+				} else if(!p1 ^ !p2){
+					console.log("geslo-error: ", p1, "=?=", p2);
+					return false;
+				} else if(p1 === p2){
+					return true;
+				} else {
+					console.log("geslo-error: ", p1, "=?=", p2);
+					return false;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Nastavitve</h3>
+			<form method="POST" th:action="@{/uporabnik/nastavitve}" th:object="${user}" onsubmit="return checkPassMatch()">
+				<input type="hidden" th:field="*{id}"/>
+				<h4>Splošno</h4>
+				<div class="form-group" style="width:10em">
+					<label for="letnik">Letnik:</label>
+					<select id="letnik" name="letnik" th:field="*{letnik}" class="form-control">
+						<option value="1" label="1. letnik" selected="selected">1. letnik</option>
+						<option value="2" label="2. letnik" >2. letnik</option>
+						<option value="3" label="3. letnik" >3. letnik</option>
+					</select>
+				</div>
+				<div class="form-group" style="width:10em">
+					<label for="enota">Enota:</label>
+					<select id="enota" name="enota" th:field="*{enota_id}" class="form-control">
+						<option th:each="item : ${enote}" th:value="${item.id}" th:text="${item.naziv}"/>
+					</select>
+				</div>
+				<hr/>
+				<h4>Naročanje</h4>
+				<div class="form-group">
+					<label for="">Mejl:</label>
+					<input type="checkbox" th:field="*{posljiEmail}"/>
+				</div>
+				<hr/>
+				<h4>Osebni podatki</h4>
+				<div class="form-group">
+					<label for="geslo">Geslo:</label>
+					<input type="password" id="geslo1" th:field="*{geslo}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="geslo2">Potrdi geslo:</label>
+					<input type="password" id="geslo2" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="email">Email:</label>
+					<input type="email" th:field="*{email}" class="form-control"/>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			
+		</section>
+	</body>
+</html>

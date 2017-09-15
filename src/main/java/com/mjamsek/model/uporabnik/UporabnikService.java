@@ -2,6 +2,8 @@ package com.mjamsek.model.uporabnik;
 
 import java.util.List;
 
+import com.mjamsek.wrappers.UporabnikNastavitveWrapper;
+
 public interface UporabnikService {
 
 	public Uporabnik poisciUporabnikaZUporabniskimImenom(String upime);
@@ -16,7 +18,7 @@ public interface UporabnikService {
 	
 	public Uporabnik poisciZId(long id);
 	
-	public void urediUporabnika(Uporabnik up);
+	public void urediUporabnika(UporabnikNastavitveWrapper up, String hostname);
 	
 	public void deaktivirajUporabnika(long id);
 	

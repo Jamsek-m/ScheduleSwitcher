@@ -23,15 +23,11 @@ public class IndexController {
 
 	@GetMapping("/")
 	public String naloziIndexStran(Model model) {
-		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String imeTrenutnegaUporabnika = auth.getName();
-		Uporabnik trenutniUporabnik = upbServ.poisciUporabnikaZUporabniskimImenom(imeTrenutnegaUporabnika);*/
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
-		
 		List<Sporocilo> neprebrana = sporServ.poisciNeprebrana(trenutniUporabnik);
 		
 		model.addAttribute("neprebrana", neprebrana);
-		
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		return "index";
 	}
 	

@@ -31,16 +31,20 @@ public class SporocilaController {
 	
 	@GetMapping("/read/{id}")
 	public String loadMessage(@PathVariable("id") long id, Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		Sporocilo sporocilo = sporServ.poisciSporocilo(id);
 		if(sporocilo.getStatus() == 0) {
 			sporServ.oznaciKotPrebrano(sporocilo);
 		}
 		model.addAttribute("sporocilo", sporocilo);
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		return "sporocila/read-sporocilo-page";
 	}
 	
 	@GetMapping("/prejeto")
 	public String loadPrejetaSporocilaPage(Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		List<Sporocilo> prejetaSporocila = sporServ.poisciVsaPrejetaSporocila(upbServ.dobiTrenutnegaUporabnika());
 		model.addAttribute("prejeta", prejetaSporocila);
 		return "sporocila/prejeta-sporocila-page";
@@ -48,6 +52,8 @@ public class SporocilaController {
 	
 	@GetMapping("/poslano")
 	public String loadPoslanaSporocilaPage(Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		List<Sporocilo> poslanaSporocila = sporServ.poisciVsaPoslanaSporocila(upbServ.dobiTrenutnegaUporabnika());
 		model.addAttribute("poslana", poslanaSporocila);
 		return "sporocila/poslana-sporocila-page";
@@ -55,6 +61,8 @@ public class SporocilaController {
 	
 	@GetMapping("/novo")
 	public String loadNovoSporociloPage(Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		SendSporociloWrapper sp = new SendSporociloWrapper();
 		model.addAttribute("spor", sp);
 		return "sporocila/novo-sporocilo-page";

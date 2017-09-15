@@ -12,8 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.mjamsek.model.enota.Enota;
 import com.mjamsek.model.predmet.Predmet;
 import com.mjamsek.model.vloga.Vloga;
 
@@ -54,7 +56,11 @@ public class Uporabnik {
 	
 	@Column(name = "posljiEmail")
 	private boolean posljiEmail;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "enota_id")
+	private Enota enota;
+	
 	public long getId() {
 		return id;
 	}
@@ -103,6 +109,14 @@ public class Uporabnik {
 		this.aktiven = aktiven;
 	}
 
+	public Enota getEnota() {
+		return enota;
+	}
+
+	public void setEnota(Enota enota) {
+		this.enota = enota;
+	}
+
 	public Set<Vloga> getVloge() {
 		return vloge;
 	}
@@ -134,7 +148,7 @@ public class Uporabnik {
 	public void setPosljiEmail(boolean posljiEmail) {
 		this.posljiEmail = posljiEmail;
 	}
-
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -155,7 +169,20 @@ public class Uporabnik {
 		}
 		sb.append("]");
 		String roles = sb.toString();
-		return String.format("{ id : %d, username : %s, displayName: %s, password : %s, active: %d, roles: %s }", this.id, this.uporabniskoIme, this.ime, this.geslo, this.aktiven, roles);
-}
+		return String.format(
+				"Uporabnik = { id : %s, uporabniskoIme : %s, ime : %s, geslo : %s, aktiven : %s, email : %s, letnik : %s, posljiEmail : %s, vloge : %s }",
+				id, uporabniskoIme, ime, geslo, aktiven, email, letnik, posljiEmail, roles);
+	}
+
+	public boolean imaVlogo(String search_role) {
+		Iterator<Vloga> it = this.vloge.iterator();
+		while(it.hasNext()) {
+			Vloga role = it.next();
+			if(role.getVloga().equals(search_role)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

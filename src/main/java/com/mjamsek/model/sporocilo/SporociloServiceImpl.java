@@ -67,7 +67,7 @@ public class SporociloServiceImpl implements SporociloService {
 		
 		sporRepo.save(sporocilo);
 		
-		if(prejemnik.isPosljiEmail()) {
+		if(prejemnik.isPosljiEmail() && prejemnik.getAktiven() == 1) {
 			Context emailContext = new Context();
 			emailContext.setVariable("zadeva", sp.getZadeva());
 			emailContext.setVariable("prejemnik", sp.getPrejemnik());

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<form th:action="@{/moderator/edit/predmet}" method="POST" th:object="${predmet}">
+				<input type="hidden" th:field="*{id}"/>
+				<div class="form-group">
+					<label for="oznaka">Oznaka</label>
+					<input type="text" id="oznaka" th:field="*{oznaka}" class="form-control"/>
+				</div>			
+				<div class="form-group">
+					<label for="naziv">Naziv</label>
+					<input type="text" id="naziv" th:field="*{naziv}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="nosilec">Nosilec</label>
+					<input type="text" id="nosilec" th:field="*{nosilec}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="letnik">Letnik</label>
+					<select id="letnik" name="letnik" th:field="*{letnik}" class="form-control">
+						<option value="1" label="1. letnik" selected="selected">1. letnik</option>
+						<option value="2" label="2. letnik" >2. letnik</option>
+						<option value="3" label="3. letnik" >3. letnik</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="enota">Enota</label>
+					<select id="enota" th:field="*{enota}" class="form-control">
+						<option th:each="item : ${vseEnote}" th:value="${item.id}" th:text="${item.naziv}"/>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+				<button type="button" class="btn btn-danger" onclick="window.location.href='/moderator/'">Prekliči</button>
+			</form>
+		</section>
+	</body>
+</html>

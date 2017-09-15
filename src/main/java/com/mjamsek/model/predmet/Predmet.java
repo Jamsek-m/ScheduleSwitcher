@@ -5,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Null;
+
+import com.mjamsek.model.enota.Enota;
 
 @Entity
 @Table(name="predmet")
@@ -27,8 +31,11 @@ public class Predmet {
 	private int letnik;
 	
 	@Column(name="nosilec")
-	@Null
 	private String nosilec;
+	
+	@ManyToOne
+	@JoinColumn(name = "enota_id")
+	private Enota enota;
 
 	public int getId() {
 		return id;
@@ -68,6 +75,14 @@ public class Predmet {
 
 	public void setLetnik(int letnik) {
 		this.letnik = letnik;
+	}
+
+	public Enota getEnota() {
+		return enota;
+	}
+
+	public void setEnota(Enota enota) {
+		this.enota = enota;
 	}
 	
 }

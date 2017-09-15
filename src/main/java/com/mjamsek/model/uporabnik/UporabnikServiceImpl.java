@@ -5,14 +5,19 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
+import com.mjamsek.email.EmailService;
+import com.mjamsek.model.enota.EnotaService;
 import com.mjamsek.model.vloga.Vloga;
 import com.mjamsek.model.vloga.VlogaRepository;
 import com.mjamsek.utilities.RegistrationUtility;
+import com.mjamsek.wrappers.UporabnikNastavitveWrapper;
 
 @Service("uporabnikService")
 public class UporabnikServiceImpl implements UporabnikService {
@@ -24,7 +29,16 @@ public class UporabnikServiceImpl implements UporabnikService {
 	private VlogaRepository vlRepo;
 	
 	@Autowired
+	private EnotaService enServ;
+	
+	@Autowired
 	private BCryptPasswordEncoder bCrypt;
+	
+	@Autowired
+	private EmailService emailServ;
+	
+	@Value("${politika.geslo.dolzina}")
+	private int DOLZINA_GESLA;
 	
 	@Override
 	public Uporabnik poisciUporabnikaZUporabniskimImenom(String upime) {
@@ -52,8 +66,24 @@ public class UporabnikServiceImpl implements UporabnikService {
 	}
 
 	@Override
-	public void urediUporabnika(Uporabnik up) {
-		//TODO: Implement
+	public void urediUporabnika(UporabnikNastavitveWrapper up, String hostname) {
+		Uporabnik trenutniUporabnik = upRepo.findById(up.getId());
+		if(!up.getEmail().equals(trenutniUporabnik.getEmail())) {
+			trenutniUporabnik.setEmail(up.getEmail());
+			trenutniUporabnik.setAktiven(RegistrationUtility.vrniAktivacijskoStevilko(upRepo));
+			//poslji potrditveni email
+			Context emailContext = new Context();
+			emailContext.setVariable("kljuc", trenutniUporabnik.getAktiven());
+			emailContext.setVariable("hostname", hostname);
+			emailServ.posljiEmail(trenutniUporabnik.getEmail(), emailContext, "Potrditev emaila", "email/change-mail-email");
+		}
+		if(up.getGeslo().length() >= DOLZINA_GESLA) {
+			trenutniUporabnik.setGeslo(bCrypt.encode(up.getGeslo()));
+		}
+		trenutniUporabnik.setEnota(enServ.poisciZId(up.getEnota_id()));
+		trenutniUporabnik.setPosljiEmail(up.isPosljiEmail());
+		trenutniUporabnik.setLetnik(up.getLetnik());
+		upRepo.save(trenutniUporabnik);
 	}
 
 	@Override
