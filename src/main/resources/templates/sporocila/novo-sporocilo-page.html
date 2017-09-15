@@ -7,18 +7,42 @@
 
 	<head>
 		<title th:text="#{sporocila.novo.title}"></title>
+		  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<script>
-			function init(){
+			function init_search_box(){
 				document.getElementById("prejemnik").addEventListener('input', autocomplete);	
 			}
 			
 			function autocomplete(evt){
-				console.log("NOV VNOS: ", this.value);
-				//TODO: ajax klic na bazo da vrne vsa imena v JSON-u
+				if(this.value.length > 1){
+					var podatki = {query : this.value};
+					var rezultat = [];
+					$.ajax({
+						type : "GET",
+						url : "/sporocila/get-users",
+						dataType : "json",
+						contentType : "application/json",
+						async : true,
+						data : podatki,
+						success : function(res){
+							for(var i = 0; i < res.length; i++){
+								rezultat.push(res[i].ime);
+							}
+							var prejemnik = document.getElementById("prejemnik");
+						    $(prejemnik).autocomplete({
+								source: rezultat
+						    });
+						},
+						error : function(res){
+							console.log("error!");
+						}
+					});					
+				}
 			}
 		</script>
 	</head>
-	<body onload="init()">
+	<body onload="init_search_box()">
 		<section layout:fragment="content">
 			<div id="msg_navbar">
 				<a href="/sporocila/poslano" th:text="#{sporocila.poslano}">Poslano</a> | <a href="/sporocila/prejeto" th:text="#{sporocila.prejeto}">Prejeto</a> | <a href="/sporocila/novo" th:text="#{sporocila.nova}">Novo</a>

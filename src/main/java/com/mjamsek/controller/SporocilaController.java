@@ -1,6 +1,5 @@
 package com.mjamsek.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mjamsek.model.sporocilo.Sporocilo;
 import com.mjamsek.model.sporocilo.SporociloService;
+import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
 import com.mjamsek.wrappers.SendSporociloWrapper;
 
@@ -62,6 +64,11 @@ public class SporocilaController {
 	public String saveNovoSporocilo(@ModelAttribute(value="spor") SendSporociloWrapper sporocilo) {
 		sporServ.posljiSporocilo(sporocilo);
 		return "redirect:/sporocila/poslano";
+	}
+	
+	@GetMapping("/get-users")
+	public @ResponseBody List<Uporabnik> getUsers(@RequestParam(value="query") String query){
+		return upbServ.poisciZImenom(query);
 	}
 	
 }
