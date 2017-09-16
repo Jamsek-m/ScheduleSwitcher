@@ -79,7 +79,7 @@
 								<span class="glyphicon glyphicon-pencil" style="font-size: 150%;"></span>
 							</a>
 						</li>
-						<li style="padding-right:20px;padding-top:10px" title="Nastavitve">
+						<li style="padding-right:20px;padding-top:10px" title="Nastavitve" th:if="${trenutniUporabnik} != null">
 							<a onclick="loadSettingsPage()" href="#" style="color:black;padding:0">
 								<span class="glyphicon glyphicon-cog" style="font-size: 150%;"></span>
 							</a>
@@ -102,7 +102,10 @@
                     <li><a href="javascript:;">link2</a></li>
                     <li><a href="javascript:;">link3</a></li>
                     <li class="nav-divider"></li>
-                    <li><a href="/logout"><i class="glyphicon glyphicon-off"></i>&#160;<span th:text="#{webpage.nav.logout}"></span></a></li>
+                    <li>
+                    	<a th:if="${trenutniUporabnik} != null" href="/logout"><i class="glyphicon glyphicon-off"></i>&#160;<span th:text="#{webpage.nav.logout}"></span></a>
+                    	<a th:if="${trenutniUporabnik} == null" href="/login"><i class="glyphicon glyphicon-off"></i>&#160;<span th:text="#{webpage.nav.login}"></span></a>
+                    </li>
                 </ul>
             </nav>
         </div>

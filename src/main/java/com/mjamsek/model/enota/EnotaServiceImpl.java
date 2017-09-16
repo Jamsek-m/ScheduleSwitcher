@@ -21,4 +21,9 @@ public class EnotaServiceImpl implements EnotaService {
 		return enRepo.findById(id);
 	}
 
+	@Override
+	public void urediEnota(Enota enota) {
+		enRepo.save(enota);
+	}
+
 }

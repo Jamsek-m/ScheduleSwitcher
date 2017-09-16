@@ -26,6 +26,10 @@ public class Termin {
 	@Column(name="status")
 	private int status;
 	
+	//status 0-ponujen termin, 1-iskani termin
+	@Column(name="tip")
+	private int tip;
+	
 	@ManyToOne
 	@JoinColumn(name = "upb_id")
 	private Uporabnik lastnik;
@@ -86,6 +90,14 @@ public class Termin {
 
 	public void setDan(int dan) {
 		this.dan = dan;
+	}
+
+	public int getTip() {
+		return tip;
+	}
+
+	public void setTip(int tip) {
+		this.tip = tip;
 	}
 
 }

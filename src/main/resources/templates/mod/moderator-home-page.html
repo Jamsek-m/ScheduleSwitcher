@@ -39,6 +39,27 @@
 					});
 				}
 			}
+			
+			function makeUserMod(){
+				var data = document.getElementById("uporabnik").value;
+				var request = new XMLHttpRequest();
+				request.open("POST", "/moderator/edit/uporabnik", true);
+				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+				request.send(data);
+				request.onload = function() {
+					if (request.status >= 200 && request.status < 400) {
+					  // Success!
+					  var resp = request.responseText;
+					  var alert = document.getElementById("msg_user_mod");
+					  alert.style.display = "block";
+					} else {
+					  // We reached our target server, but it returned an error
+					console.log("error");
+					}
+				};
+				
+				
+			}
 		</script>
 	</head>
 	<body onload="init_search_for_mod()">
@@ -58,7 +79,7 @@
 			<form method="GET" th:action="@{/moderator/edit/enota}">
 				<div class="form-group">
 					<label for="enota">Predmet</label>
-					<select id="enota" class="form-control">
+					<select id="enota" name="enota" class="form-control">
 						<option value="-1">Izberi enoto</option>
 						<option th:each="enota : ${vseEnote}" th:value="${enota.id}" th:text="${enota.naziv}"/>					
 					</select>
@@ -67,13 +88,18 @@
 			</form>
 			<hr/>
 			<h4>Dodaj moderatorja</h4>
-			<form method="GET" th:action="@{/moderator/edit/uporabnik}">
+			<!-- 
+			<form method="POST" th:action="@{/moderator/edit/uporabnik}" id="userForm"> -->
 				<div class="form-group">
 					<label for="uporabnik">Uporabnik</label>
 					<input type="text" id="uporabnik" name="uporabnik" class="form-control"/>
 				</div>
-				<button type="submit" class="btn btn-default">Submit</button>
-			</form>
+				<div class="alert alert-info alert-dismissable" style="display:none" id="msg_user_mod">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					Uporabnik je bil nastavljen za moderatorja!
+				</div>
+				<button type="button" onclick="makeUserMod()" class="btn btn-default">Submit</button>
+		<!-- 	</form> -->
 		</section>
 	</body>
 </html>

@@ -40,6 +40,9 @@ public class UporabnikServiceImpl implements UporabnikService {
 	@Value("${politika.geslo.dolzina}")
 	private int DOLZINA_GESLA;
 	
+	private static final int STATUS_AKTIVEN = 1;
+	private static final int STATUS_NEAKTIVEN = 0;
+	
 	@Override
 	public Uporabnik poisciUporabnikaZUporabniskimImenom(String upime) {
 		return upRepo.findByUporabniskoIme(upime);
@@ -89,7 +92,7 @@ public class UporabnikServiceImpl implements UporabnikService {
 	@Override
 	public void deaktivirajUporabnika(long id) {
 		Uporabnik up = upRepo.findById(id);
-		up.setAktiven(0);
+		up.setAktiven(STATUS_NEAKTIVEN);
 		upRepo.save(up);
 	}
 
@@ -101,7 +104,7 @@ public class UporabnikServiceImpl implements UporabnikService {
 	@Override
 	public void aktivirajUporabnika(long id) {
 		Uporabnik up = upRepo.findById(id);
-		up.setAktiven(1);
+		up.setAktiven(STATUS_AKTIVEN);
 		upRepo.save(up);
 	}
 
@@ -115,6 +118,13 @@ public class UporabnikServiceImpl implements UporabnikService {
 	@Override
 	public List<Uporabnik> poisciZImenom(String ime) {
 		return upRepo.findByImeContaining(ime);
+	}
+
+	@Override
+	public void makeMod(Uporabnik uporabnik) {
+		Vloga moderator = vlRepo.findByVloga("MOD");
+		uporabnik.getVloge().add(moderator);
+		upRepo.save(uporabnik);
 	}
 
 }

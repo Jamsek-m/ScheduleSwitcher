@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<form method="POST" th:action="@{/moderator/edit/enota}" th:object="${enota}">
+				<input type="hidden" th:field="*{id}"/>
+				<div class="form-group">
+					<label for="oznaka">Oznaka:</label>
+					<input type="text" name="oznaka" id="oznaka" th:field="*{oznaka}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="naziv">Naziv:</label>
+					<input type="text" name="naziv" id="naziv" th:field="*{naziv}" class="form-control"/>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+				<button type="button" class="btn btn-danger" onclick="window.location.href='/moderator/'">Prekliči</button>
+			</form>
+		</section>
+	</body>
+</html>

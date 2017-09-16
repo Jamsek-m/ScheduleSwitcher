@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mjamsek.model.predmet.Predmet;
+import com.mjamsek.model.predmet.PredmetService;
 import com.mjamsek.model.uporabnik.Uporabnik;
+import com.mjamsek.model.uporabnik.UporabnikService;
 import com.mjamsek.utilities.DanUra;
 
 @Service("terminService")
@@ -14,6 +17,14 @@ public class TerminServiceImpl implements TerminService {
 
 	@Autowired
 	private TerminRepository termRepo;
+	
+	@Autowired
+	private UporabnikService upbServ;
+	
+	@Autowired
+	private PredmetService predServ;
+	
+	private static final int TIP_ISKANI_TERMIN = 1;
 	
 	@Override
 	public List<Termin> poisciSvojeTermine(Uporabnik up) {
@@ -31,6 +42,15 @@ public class TerminServiceImpl implements TerminService {
 			}
 		}
 		return rezultat;
+	}
+	
+	public List<Termin> poisciPonujeneTermineZaTvojTermin(Termin termin){
+		Uporabnik iskalec = termin.getLastnik();
+		Predmet iskaniPredmet = termin.getPredmet();
+		int iskaniCas = termin.getCas();
+		int iskaniDan = termin.getDan();
+		
+		return termRepo.findByPredmetAndTipAndDanAndCasAndLastnikNot(iskaniPredmet, TIP_ISKANI_TERMIN, iskaniDan, iskaniCas, iskalec);
 	}
 
 }

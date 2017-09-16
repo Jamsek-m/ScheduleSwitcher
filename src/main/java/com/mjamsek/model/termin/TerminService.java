@@ -11,4 +11,6 @@ public interface TerminService {
 	
 	public List<Termin> poisciIzbraneTermine(List<DanUra> termini);
 	
+	public List<Termin> poisciPonujeneTermineZaTvojTermin(Termin termin);
+	
 }

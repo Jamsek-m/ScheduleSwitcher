@@ -24,6 +24,9 @@ public class SporociloServiceImpl implements SporociloService {
 	@Autowired
 	private EmailService emailServ;
 	
+	private static final int STATUS_PREBRANO = 1;
+	private static final int STATUS_NEPREBRANO = 0;
+	
 	@Override
 	public List<Sporocilo> poisciVsaPoslanaSporocila(Uporabnik up) {
 		return sporRepo.findByAvtorOrderByPoslanoDesc(up);
@@ -46,7 +49,7 @@ public class SporociloServiceImpl implements SporociloService {
 
 	@Override
 	public void oznaciKotPrebrano(Sporocilo sp) {
-		sp.setStatus(1);
+		sp.setStatus(STATUS_PREBRANO);
 		sporRepo.save(sp);
 	}
 
@@ -61,7 +64,7 @@ public class SporociloServiceImpl implements SporociloService {
 		sporocilo.setAvtor(avtor);
 		sporocilo.setPoslano(trenutniCas);
 		sporocilo.setPrejemnik(prejemnik);
-		sporocilo.setStatus(0);
+		sporocilo.setStatus(STATUS_NEPREBRANO);
 		sporocilo.setZadeva(sp.getZadeva());
 		sporocilo.setVsebina(sp.getVsebina());
 		

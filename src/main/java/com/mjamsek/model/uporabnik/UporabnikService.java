@@ -26,4 +26,6 @@ public interface UporabnikService {
 	
 	public Uporabnik dobiTrenutnegaUporabnika();
 	
+	public void makeMod(Uporabnik uporabnik);
+	
 }

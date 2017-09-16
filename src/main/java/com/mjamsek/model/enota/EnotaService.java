@@ -8,4 +8,6 @@ public interface EnotaService {
 	
 	public Enota poisciZId(int id);
 	
+	public void urediEnota(Enota enota);
+	
 }
