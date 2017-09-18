@@ -11,7 +11,7 @@
 		  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<script>
 			function init_search_box(){
-				document.getElementById("prejemnik").addEventListener('input', autocomplete);	
+				document.getElementById("prejemnik").addEventListener('input', autocomplete);
 			}
 			
 			function autocomplete(evt){
@@ -42,7 +42,7 @@
 			}
 		</script>
 	</head>
-	<body onload="init_search_box()">
+	<body>
 		<section layout:fragment="content">
 			<div id="msg_navbar">
 				<a href="/sporocila/poslano" th:text="#{sporocila.poslano}">Poslano</a> | <a href="/sporocila/prejeto" th:text="#{sporocila.prejeto}">Prejeto</a> | <a href="/sporocila/novo" th:text="#{sporocila.nova}">Novo</a>
@@ -51,7 +51,10 @@
 			<form method="POST" th:action="@{/sporocila/novo}" th:object="${spor}">
 				<div class="form-group" style="width:30em">
 					<label for="prejemnik" th:text="#{sporocila.read.za} + ':'">Za:</label>
-					<input type="text" id="prejemnik" name="prejemnik" th:field="*{prejemnik}" class="form-control" />
+					<input type="text" id="prejemnik" name="prejemnik" th:field="*{prejemnik}" class="form-control"/>
+					<script>
+						init_search_box();
+					</script>
 				</div>
 				<div class="form-group" style="width:30em">
 					<label for="zadeva" th:text="#{sporocila.prejeta.zadeva} + ':'">Zadeva:</label>

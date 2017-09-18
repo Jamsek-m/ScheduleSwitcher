@@ -10,4 +10,6 @@ public interface EnotaService {
 	
 	public void urediEnota(Enota enota);
 	
+	public void shraniEnota(Enota enota);
+	
 }

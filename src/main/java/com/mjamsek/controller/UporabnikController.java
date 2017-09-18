@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mjamsek.model.enota.Enota;
 import com.mjamsek.model.enota.EnotaService;
+import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
 import com.mjamsek.wrappers.UporabnikNastavitveWrapper;
@@ -28,9 +29,15 @@ public class UporabnikController {
 	@Autowired
 	private EnotaService enServ;
 	
+	@Autowired
+	private SporociloService sporServ;
+	
 	@GetMapping("/nastavitve")
 	public String loadNastavitvePage(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
 		
 		UporabnikNastavitveWrapper wrapper = new UporabnikNastavitveWrapper();
 		wrapper.setEmail(trenutniUporabnik.getEmail());
@@ -40,7 +47,7 @@ public class UporabnikController {
 		wrapper.setPosljiEmail(trenutniUporabnik.isPosljiEmail());
 		wrapper.setEnota_id(trenutniUporabnik.getEnota().getId());
 		
-		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		
 		model.addAttribute("user", wrapper);
 		
 		List<Enota> enote = enServ.poisciVse();

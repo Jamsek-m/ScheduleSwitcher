@@ -83,4 +83,10 @@ public class SporociloServiceImpl implements SporociloService {
 		
 	}
 
+	@Override
+	public long steviloNeprebranih() {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		return sporRepo.findNumberOfUnreadMessages(trenutniUporabnik);
+	}
+
 }

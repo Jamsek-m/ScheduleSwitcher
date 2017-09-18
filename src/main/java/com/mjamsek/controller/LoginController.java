@@ -18,6 +18,7 @@ import org.thymeleaf.context.Context;
 import com.mjamsek.email.EmailService;
 import com.mjamsek.model.enota.Enota;
 import com.mjamsek.model.enota.EnotaService;
+import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
 import com.mjamsek.utilities.EmailUtility;
@@ -34,6 +35,9 @@ public class LoginController {
 	@Autowired
 	private EnotaService enServ;
 	
+	@Autowired
+	private SporociloService sporServ;
+	
 	@Value("${politika.geslo.dolzina}")
 	private int DOLZINA_GESLA;
 	
@@ -41,6 +45,9 @@ public class LoginController {
 	public String loadLoginPage(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
 		model.addAttribute("uporabnik", new Uporabnik());
 		return "login/login-page";
 	}
@@ -49,7 +56,11 @@ public class LoginController {
 	public String loadRegistrationPage(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
 		model.addAttribute("uporabnik", new Uporabnik());
+		
 		List<Enota> enote = enServ.poisciVse();
 		model.addAttribute("enote", enote);
 		return "login/register-page";
@@ -104,6 +115,8 @@ public class LoginController {
 	public String loadAccessDeniedPage(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
 		return "login/access-denied-page";
 	}
 	
@@ -111,6 +124,9 @@ public class LoginController {
 	public String activateUser(@PathVariable("activation_key") int key, Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
 		Uporabnik uporabnik = upbServ.poisciPrekoAktivacijskegaKljuca(key);
 		if(uporabnik != null) {
 			uporabnik.setAktiven(1);

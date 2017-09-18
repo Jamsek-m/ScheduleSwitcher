@@ -20,14 +20,19 @@ public class IndexController {
 	
 	@Autowired
 	private UporabnikService upbServ;
-
+	
 	@GetMapping("/")
 	public String naloziIndexStran(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
 		List<Sporocilo> neprebrana = sporServ.poisciNeprebrana(trenutniUporabnik);
 		
 		model.addAttribute("neprebrana", neprebrana);
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		
 		return "index";
 	}
 	

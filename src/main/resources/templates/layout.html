@@ -98,9 +98,14 @@
             <nav class="nav-sidebar">
                 <ul class="nav">
                     <li class="active"><a href="/" th:text="#{webpage.nav.home}"></a></li>
-                    <li><a href="/sporocila/prejeto" th:text="#{webpage.nav.sporocila}"></a></li>
-                    <li><a href="javascript:;">link2</a></li>
-                    <li><a href="javascript:;">link3</a></li>
+                    <li>
+                    	<a href="/sporocila/prejeto">
+                    		<span th:text="#{webpage.nav.sporocila}"></span>
+                    		<span style="color:red" th:if="${stNeprebranih} > 0" th:text="'(' + ${stNeprebranih} + ')'"></span>
+                    	</a>
+                    </li>
+                    <li><a href="javascript:;">Moji termini</a></li>
+                    <li><a href="javascript:;">Išči termine</a></li>
                     <li class="nav-divider"></li>
                     <li>
                     	<a th:if="${trenutniUporabnik} != null" href="/logout"><i class="glyphicon glyphicon-off"></i>&#160;<span th:text="#{webpage.nav.logout}"></span></a>

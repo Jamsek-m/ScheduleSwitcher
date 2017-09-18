@@ -19,4 +19,7 @@ public interface SporociloRepository extends JpaRepository<Sporocilo, Long>{
 	@Query("SELECT s FROM Sporocilo s WHERE s.status = 0 AND s.prejemnik = :target")
 	public List<Sporocilo> findUnreadMessages(@Param("target") Uporabnik u);
 	
+	@Query("SELECT COUNT(*) FROM Sporocilo s WHERE s.status = 0 AND s.prejemnik = :target")
+	public long findNumberOfUnreadMessages(@Param("target") Uporabnik u);
+	
 }

@@ -45,4 +45,9 @@ public class PredmetServiceImpl implements PredmetService {
 		predmetRepo.save(predmet);
 	}
 
+	@Override
+	public void shraniPredmet(Predmet p) {
+		predmetRepo.save(p);
+	}
+
 }

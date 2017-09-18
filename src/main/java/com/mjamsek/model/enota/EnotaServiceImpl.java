@@ -26,4 +26,9 @@ public class EnotaServiceImpl implements EnotaService {
 		enRepo.save(enota);
 	}
 
+	@Override
+	public void shraniEnota(Enota enota) {
+		enRepo.save(enota);
+	}
+
 }

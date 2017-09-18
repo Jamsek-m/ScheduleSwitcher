@@ -17,6 +17,7 @@ import com.mjamsek.model.enota.Enota;
 import com.mjamsek.model.enota.EnotaService;
 import com.mjamsek.model.predmet.Predmet;
 import com.mjamsek.model.predmet.PredmetService;
+import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
 import com.mjamsek.wrappers.EditPredmetWrapper;
@@ -34,16 +35,24 @@ public class ModeratorController {
 	@Autowired
 	private EnotaService enServ;
 	
+	@Autowired
+	private SporociloService sporServ;
+	
 	@GetMapping("/")
 	public String loadModeratorPage(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
 		
 		List<Predmet> vsiPredmeti = predServ.poisciVse();
 		model.addAttribute("vsiPredmeti", vsiPredmeti);
 		
 		List<Enota> vseEnote = enServ.poisciVse();
 		model.addAttribute("vseEnote", vseEnote);
+		
+		model.addAttribute("novPredmetObj", new Predmet());
+		model.addAttribute("novaEnotaObj", new Enota());
 		
 		return "mod/moderator-home-page";
 	}
@@ -52,6 +61,8 @@ public class ModeratorController {
 	public String loadEditPredmetPage(@RequestParam("predmet") int predmet_id,  Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
 		
 		Predmet predmet = predServ.poisciPoId(predmet_id);
 		EditPredmetWrapper wrapper = new EditPredmetWrapper();
@@ -82,6 +93,8 @@ public class ModeratorController {
 		
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
 		
 		return "mod/edit-enota-page";
 	}
@@ -113,6 +126,20 @@ public class ModeratorController {
 		upbServ.makeMod(noviMod);
 		
 		return "uspeh";
+	}
+	
+	@PostMapping("/novo/predmet")
+	public String saveNoviPredmet(@ModelAttribute("novPredmetObj") Predmet predmet) {
+		predServ.shraniPredmet(predmet);
+		
+		return "redirect:/moderator/";
+	}
+	
+	@PostMapping("/novo/enota")
+	public String saveNovaEnota(@ModelAttribute("novaEnotaObj") Enota enota) {
+		enServ.shraniEnota(enota);
+		
+		return "redirect:/moderator/";
 	}
 	
 }

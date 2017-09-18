@@ -16,4 +16,6 @@ public interface PredmetService {
 	
 	public void urediPredmet(EditPredmetWrapper p);
 	
+	public void shraniPredmet(Predmet p);
+	
 }

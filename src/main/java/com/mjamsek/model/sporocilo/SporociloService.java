@@ -19,4 +19,6 @@ public interface SporociloService {
 	
 	public void posljiSporocilo(SendSporociloWrapper sp);
 	
+	public long steviloNeprebranih();
+	
 }

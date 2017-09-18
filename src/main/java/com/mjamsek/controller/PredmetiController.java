@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mjamsek.model.predmet.Predmet;
 import com.mjamsek.model.predmet.PredmetService;
+import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.termin.Termin;
 import com.mjamsek.model.termin.TerminService;
 import com.mjamsek.model.uporabnik.Uporabnik;
@@ -28,10 +29,15 @@ public class PredmetiController {
 	@Autowired
 	private TerminService terServ;
 	
+	@Autowired
+	private SporociloService sporServ;
+	
 	@GetMapping("/moji-predmeti")
 	public String loadMojiPredmetPage(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
 		
 		List<Termin> mojiTermini = terServ.poisciSvojeTermine(trenutniUporabnik);
 		model.addAttribute("mojiTermini", mojiTermini);
