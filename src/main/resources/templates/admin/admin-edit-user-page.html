@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Uredi uporabnika <span th:text="${uporabnik.displayName}"></span></h3>
+			<a href="">Ponastavi geslo</a>
+			<form method="POST" th:action="@{/admin/uredi}" th:object="${uporabnik}" style="padding-top:10px">
+				<input type="hidden" th:field="*{id}"/>
+				<div class="form-group">
+					<label for="upime">Uporabniško ime</label>
+					<input type="text" th:field="*{username}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="ime">Ime</label>
+					<input type="text" th:field="*{displayName}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="text" th:field="*{email}" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="vloge">Dovoljenja: </label>
+					 <table>
+					 	<tr>
+					 		<td th:each="role, iter : ${vloge}">
+					 			<label th:text="${role.vloga}"></label>
+					 			<input type="checkbox" th:name="|vloge[${iter.index}]|" th:value="${role.id}" th:checked="${userMeta.imaVlogo(role.vloga)}" />&#160;
+					 		</td>
+					 	</tr>
+					 </table>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+				<button type="button" class="btn btn-danger" onclick="window.location.href='/admin/'">Prekliči</button>
+			</form>
+			
+			
+		</section>
+	</body>
+</html>

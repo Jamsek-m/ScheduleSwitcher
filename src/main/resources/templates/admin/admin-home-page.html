@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<style>
+			tr:hover {
+				background-color : #f5f5f5;
+			}
+			td, th {
+				padding-right:50px;
+				border-bottom: 1px solid #ddd;
+			}
+			#seznamUporabnikov {
+				padding-top : 20px;
+			}
+			#kazalo {
+				padding-top : 20px;
+			}
+			.oznaciTrenutno {
+				color : red;
+			}
+		</style>
+		<script>
+			function init_search_for_user(){
+				document.getElementById("searchBox").addEventListener('input', autocomplete);
+			}
+			function autocomplete(evt){
+				if(this.value.length > 1){
+					var podatki = {query : this.value};
+					var rezultat = [];
+					$.ajax({
+						type : "GET",
+						url : "/sporocila/get-users",
+						dataType : "json",
+						contentType : "application/json",
+						async : true,
+						data : podatki,
+						success : function(res){
+							for(var i = 0; i < res.length; i++){
+								rezultat.push(res[i].ime);
+							}
+							var searchBox = document.getElementById("searchBox");
+						    $(searchBox).autocomplete({
+								source: rezultat
+						    });
+						},
+						error : function(res){
+							console.log("error!");
+						}
+					});					
+				}
+			}
+			function isci(){
+				var uporabnik = document.getElementById("searchBox").value;
+				var link = "/admin/search-users?uporabnik=" + uporabnik;
+				window.location.href = link;
+			}
+			function reset(){
+				window.location.href="/admin/stran/1";
+			}
+			function deaktivirajWarning(){
+				return confirm("Ali res želite deaktivirati uporabnika?");
+			}
+		</script>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Admin Homepage</h3>
+			<input type="text" id="searchBox" class="form-control" style="width:15em; display:inline"/> <button class="btn btn-default" onclick="isci()">Išči</button> <button onclick="reset()" class="btn btn-default">Reset</button>
+			<script>
+				init_search_for_user();
+			</script>
+			<div id="seznamUporabnikov">
+				<table>
+					<tr>
+						<th>Ime</th>
+						<th>Uporabniško ime</th>
+						<th>Vloge</th>
+						<th>Akcije</th>
+					</tr>
+					<tr th:each="item : ${uporabniki}">
+						<td th:text="${item.ime}"></td>
+						<td th:text="${item.uporabniskoIme}"></td>
+						<td th:text="${item.vrniIzpisVlog()}"></td>
+						<td>
+							<a th:href="@{'/admin/uredi/' + ${item.id}}" title="Uredi"><span class="glyphicon glyphicon-pencil"></span></a>
+							<a th:if="${!item.imaVlogo('ADMIN')}" style="margin-left:5px" th:href="@{'/admin/deaktiviraj/' + ${item.id}}" title="Deaktiviraj" onclick="return deaktivirajWarning()"><span class="glyphicon glyphicon-eye-close"></span></a>
+						</td>
+					</tr>
+				</table>
+				<div id="kazalo" th:if="${iskanje == null && stStrani > 1}">
+					<a href="/admin/stran/1" th:classappend="${trenutnaStran} == 1 ? oznaciTrenutno">Prva</a> - 
+					<span th:if="${stStrani > 2}">
+						<span th:each="i : ${#numbers.sequence(2, stStrani-1, 1)}">
+							<a th:href="@{'/admin/stran/' + ${i}}" th:text="${i}" th:classappend="${trenutnaStran} == ${i} ? oznaciTrenutno"></a>
+							<span> - </span>
+						</span>
+					</span>
+					<a th:href="@{'/admin/stran/' + ${stStrani}}" th:classappend="${trenutnaStran} == ${stStrani} ? oznaciTrenutno">Zadnja</a>
+				</div>
+			</div>
+			<h3>Razvijalci</h3>
+			<h4>Baza:</h4>
+			<img th:src="@{/images/placeholder.png}" style="border: 1px solid black"/>
+			<div>
+				Interfaci:
+			</div>
+		</section>
+	</body>
+</html>

@@ -185,4 +185,25 @@ public class Uporabnik {
 		return false;
 	}
 	
+	public String vrniIzpisVlog() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		if(this.vloge != null) {
+			boolean prvi = true;
+			Iterator<Vloga> it = this.vloge.iterator();
+			while(it.hasNext()) {
+				Vloga role = it.next();
+				if(prvi) {
+					sb.append(role.getVloga());
+					prvi = false;
+				} else {
+					sb.append(", ");
+					sb.append(role.getVloga());
+				}
+			}
+		}
+		sb.append("]");
+		return sb.toString();
+	}
+	
 }

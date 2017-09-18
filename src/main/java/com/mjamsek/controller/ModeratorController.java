@@ -107,7 +107,6 @@ public class ModeratorController {
 	
 	@PostMapping("/edit/uporabnik")
 	public @ResponseBody String makeUserMod(@RequestBody String uporabnik) {
-		System.err.println("Uporabnik: " + uporabnik);
 		uporabnik = uporabnik.split("=")[0];
 		
 		List<Uporabnik> uporabniki = upbServ.poisciZImenom(uporabnik);

@@ -17,6 +17,7 @@ import com.mjamsek.model.enota.EnotaService;
 import com.mjamsek.model.vloga.Vloga;
 import com.mjamsek.model.vloga.VlogaRepository;
 import com.mjamsek.utilities.RegistrationUtility;
+import com.mjamsek.wrappers.EditUserWrapper;
 import com.mjamsek.wrappers.UporabnikNastavitveWrapper;
 
 @Service("uporabnikService")
@@ -39,6 +40,9 @@ public class UporabnikServiceImpl implements UporabnikService {
 	
 	@Value("${politika.geslo.dolzina}")
 	private int DOLZINA_GESLA;
+	
+	@Value("${politika.seznam.velikost}")
+	private int STEVILO_NA_STRAN;
 	
 	private static final int STATUS_AKTIVEN = 1;
 	private static final int STATUS_NEAKTIVEN = 0;
@@ -125,6 +129,48 @@ public class UporabnikServiceImpl implements UporabnikService {
 		Vloga moderator = vlRepo.findByVloga("MOD");
 		uporabnik.getVloge().add(moderator);
 		upRepo.save(uporabnik);
+	}
+
+	@Override
+	public List<Uporabnik> vrniVsePoStrani(int stran) {
+		return upRepo.findAllByPage(STEVILO_NA_STRAN, (stran-1) * STEVILO_NA_STRAN);
+	}
+
+	@Override
+	public long vrniSteviloUporabnikov() {
+		return upRepo.findNumberOfUsers();
+	}
+
+	@Override
+	public void adminUrediUporabnika(EditUserWrapper up, String hostname) {
+		Uporabnik uporabnik = upRepo.findById(up.getId());
+		
+		uporabnik.setUporabniskoIme(up.getUsername());
+		uporabnik.setIme(up.getDisplayName());
+		this.zamenjajEmail(uporabnik, up.getEmail(), hostname);
+		uporabnik.setVloge(new HashSet<Vloga>());
+		for(int i = 0; i < up.getVloge().size(); i++) {
+			String rola = up.getVloge().get(i);
+			if(rola != null && !rola.equals("")) {
+				int role_id = Integer.parseInt(up.getVloge().get(i));
+				Vloga role = vlRepo.findById(role_id);
+				uporabnik.getVloge().add(role);
+			}
+		}
+		upRepo.save(uporabnik);
+	}
+
+	@Override
+	public void zamenjajEmail(Uporabnik up, String email, String hostname) {
+		if(!up.getEmail().equals(email)) {
+			up.setEmail(email);
+			up.setAktiven(RegistrationUtility.vrniAktivacijskoStevilko(upRepo));
+			//poslji potrditveni email
+			Context emailContext = new Context();
+			emailContext.setVariable("kljuc", up.getAktiven());
+			emailContext.setVariable("hostname", hostname);
+			emailServ.posljiEmail(up.getEmail(), emailContext, "Potrditev emaila", "email/change-mail-email");
+		}
 	}
 
 }

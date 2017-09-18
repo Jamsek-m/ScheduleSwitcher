@@ -2,6 +2,7 @@ package com.mjamsek.model.uporabnik;
 
 import java.util.List;
 
+import com.mjamsek.wrappers.EditUserWrapper;
 import com.mjamsek.wrappers.UporabnikNastavitveWrapper;
 
 public interface UporabnikService {
@@ -27,5 +28,13 @@ public interface UporabnikService {
 	public Uporabnik dobiTrenutnegaUporabnika();
 	
 	public void makeMod(Uporabnik uporabnik);
+	
+	public List<Uporabnik> vrniVsePoStrani(int stran);
+	
+	public long vrniSteviloUporabnikov();
+	
+	public void adminUrediUporabnika(EditUserWrapper up, String hostname);
+	
+	public void zamenjajEmail(Uporabnik up, String email, String hostname);
 	
 }
