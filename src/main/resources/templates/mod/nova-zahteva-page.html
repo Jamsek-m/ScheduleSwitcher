@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+		<style>
+			form {
+				width : 40em;
+			}
+		</style>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Nova zahteva</h3>
+			<form method="POST" th:action="@{/uporabnik/nova-zahteva}" th:object="${zahteva}">
+				<div class="form-group">
+					<label>Tip zahteve</label>
+					<select id="tip" th:field="*{tipZahteve}" class="form-control">
+						<option th:each="item : ${vrste}" th:value="${item.id}" th:text="${item.naziv}"/>
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Vsebina</label>
+					<textarea id="vsebina" th:field="*{vsebina}" class="form-control" rows="8"></textarea>
+				</div>
+				<button class="btn btn-default" type="submit">Submit</button>
+			</form>
+		</section>
+	</body>
+</html>

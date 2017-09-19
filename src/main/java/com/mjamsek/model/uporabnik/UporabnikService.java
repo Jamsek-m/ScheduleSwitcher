@@ -37,4 +37,6 @@ public interface UporabnikService {
 	
 	public void zamenjajEmail(Uporabnik up, String email, String hostname);
 	
+	public void ponastaviGeslo(String hostname, long id);
+	
 }

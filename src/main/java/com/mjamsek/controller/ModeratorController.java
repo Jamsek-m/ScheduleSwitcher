@@ -20,6 +20,9 @@ import com.mjamsek.model.predmet.PredmetService;
 import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
+import com.mjamsek.model.zahteva.TipZahteve;
+import com.mjamsek.model.zahteva.Zahteva;
+import com.mjamsek.model.zahteva.ZahtevaService;
 import com.mjamsek.wrappers.EditPredmetWrapper;
 
 @Controller
@@ -37,6 +40,9 @@ public class ModeratorController {
 	
 	@Autowired
 	private SporociloService sporServ;
+	
+	@Autowired
+	private ZahtevaService zahServ;
 	
 	@GetMapping("/")
 	public String loadModeratorPage(Model model) {
@@ -139,6 +145,19 @@ public class ModeratorController {
 		enServ.shraniEnota(enota);
 		
 		return "redirect:/moderator/";
+	}
+	
+	@GetMapping("/zahteve")
+	public String loadZahtevePage(Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
+		List<Zahteva> zahteve = zahServ.vrniVse();
+		model.addAttribute("zahteve", zahteve);
+		
+		return "mod/zahteve-page";
 	}
 	
 }

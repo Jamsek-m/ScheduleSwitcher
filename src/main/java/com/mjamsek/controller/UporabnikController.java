@@ -17,6 +17,9 @@ import com.mjamsek.model.enota.EnotaService;
 import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
+import com.mjamsek.model.zahteva.TipZahteve;
+import com.mjamsek.model.zahteva.Zahteva;
+import com.mjamsek.model.zahteva.ZahtevaService;
 import com.mjamsek.wrappers.UporabnikNastavitveWrapper;
 
 @Controller
@@ -31,6 +34,9 @@ public class UporabnikController {
 	
 	@Autowired
 	private SporociloService sporServ;
+	
+	@Autowired
+	private ZahtevaService zahServ;
 	
 	@GetMapping("/nastavitve")
 	public String loadNastavitvePage(Model model) {
@@ -64,6 +70,39 @@ public class UporabnikController {
 		}
 		upbServ.urediUporabnika(up, hostname);
 		return "redirect:/uporabnik/nastavitve";
+	}
+	
+	@GetMapping("/nova-zahteva")
+	public String loadNovaZahtevaPage(Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
+		List<TipZahteve> vrsteZahtev = zahServ.vrniTipeZahtev();
+		model.addAttribute("vrste", vrsteZahtev);
+		Zahteva zahteva = new Zahteva();
+		model.addAttribute("zahteva", zahteva);
+		
+		return "mod/nova-zahteva-page";
+	}
+	
+	@PostMapping("/nova-zahteva")
+	public String sendZahteva(@ModelAttribute("zahteva") Zahteva zahteva) {
+		zahServ.posljiZahtevo(zahteva);
+		return "redirect:/";
+	}
+	
+	@GetMapping("/moje-zahteve")
+	public String loadMojeZahtevePage(Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
+		List<Zahteva> zahteve = zahServ.vrniSvojeZahteve(trenutniUporabnik);
+		model.addAttribute("zahteve", zahteve);
+		return "";
 	}
 	
 }

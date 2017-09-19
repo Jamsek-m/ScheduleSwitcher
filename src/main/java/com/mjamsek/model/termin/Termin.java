@@ -11,7 +11,6 @@ import javax.persistence.Table;
 
 import com.mjamsek.model.predmet.Predmet;
 import com.mjamsek.model.uporabnik.Uporabnik;
-import com.mjamsek.utilities.DanUra;
 
 @Entity
 @Table(name="termini")

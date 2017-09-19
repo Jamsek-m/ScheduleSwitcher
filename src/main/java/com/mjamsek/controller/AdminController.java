@@ -130,4 +130,14 @@ public class AdminController {
 		return "redirect:/admin/";
 	}
 	
+	@GetMapping("/ponastavi-geslo/{id}")
+	public String resetPassword(@PathVariable("id") long id, HttpServletRequest request) {
+		String hostname = "http://" + request.getServerName();
+		if(request.getServerName().equals("localhost")) {
+			hostname += ":" + request.getServerPort();
+		}
+		upbServ.ponastaviGeslo(hostname, id);
+		return "redirect:/admin/";
+	}
+	
 }

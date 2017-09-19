@@ -173,4 +173,17 @@ public class UporabnikServiceImpl implements UporabnikService {
 		}
 	}
 
+	@Override
+	public void ponastaviGeslo(String hostname, long id) {
+		int nakljucnoStevilo = (int)((Math.random() * (999999+1-100000)) + 100000);
+		Uporabnik uporabnik = upRepo.findById(id);
+		uporabnik.setGeslo(bCrypt.encode(nakljucnoStevilo+""));
+		upRepo.save(uporabnik);
+		
+		Context emailContext = new Context();
+		emailContext.setVariable("novoGeslo", nakljucnoStevilo);
+		emailContext.setVariable("uporabnik", uporabnik);
+		emailServ.posljiEmail(uporabnik.getEmail(), emailContext, "Ponastavitev gesla", "email/reset-geslo-email");
+	}
+
 }

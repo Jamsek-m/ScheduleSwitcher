@@ -22,10 +22,14 @@ import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
 import com.mjamsek.utilities.EmailUtility;
+import com.mjamsek.utilities.InitUtility;
 
 @Controller
 public class LoginController {
 
+	@Autowired
+	private InitUtility init;
+	
 	@Autowired
 	private UporabnikService upbServ;
 	
@@ -43,6 +47,7 @@ public class LoginController {
 	
 	@GetMapping("/login")
 	public String loadLoginPage(Model model) {
+		init.initPodatkovneBaze();
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		long stNeprebranih = sporServ.steviloNeprebranih();

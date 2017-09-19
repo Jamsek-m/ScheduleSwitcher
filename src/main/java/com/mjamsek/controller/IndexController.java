@@ -11,6 +11,7 @@ import com.mjamsek.model.sporocilo.Sporocilo;
 import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
+import com.mjamsek.utilities.InitUtility;
 
 @Controller
 public class IndexController {

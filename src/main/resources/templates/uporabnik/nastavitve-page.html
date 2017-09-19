@@ -23,7 +23,22 @@
 					return false;
 				}
 			}
+			function novaZahteva(){
+				window.location.href = "/uporabnik/nova-zahteva";
+			}
+			function vseZahteve(){
+				window.location.href = "/uporabnik/moje-zahteve";
+			}
 		</script>
+		<style>
+			.inputField {
+				 width : 20em;
+			}
+			hr {
+				margin-left : 0;
+				width : 40em;
+			}
+		</style>
 	</head>
 	<body>
 		<section layout:fragment="content">
@@ -53,21 +68,22 @@
 				</div>
 				<hr/>
 				<h4>Osebni podatki</h4>
-				<div class="form-group">
+				<div class="form-group" class="inputField">
 					<label for="geslo">Geslo:</label>
 					<input type="password" id="geslo1" th:field="*{geslo}" class="form-control"/>
 				</div>
-				<div class="form-group">
+				<div class="form-group" class="inputField">
 					<label for="geslo2">Potrdi geslo:</label>
 					<input type="password" id="geslo2" class="form-control"/>
 				</div>
-				<div class="form-group">
+				<div class="form-group" class="inputField">
 					<label for="email">Email:</label>
 					<input type="email" th:field="*{email}" class="form-control"/>
 				</div>
 				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
-			
+			<hr/>
+			<button class="btn btn-default" onclick="novaZahteva()">Odpri novo zahtevo</button><button class="btn btn-default" onclick="vseZahteve()">Poslane zahteve</button>
 		</section>
 	</body>
 </html>

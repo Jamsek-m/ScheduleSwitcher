@@ -7,11 +7,16 @@
 
 	<head>
 		<title th:text="#{index.title}"></title>
+		<script>
+			function ponastaviWarning(){
+				return confirm("Ali res želite ponastaviti geslo uporabnika?");
+			}
+		</script>
 	</head>
 	<body>
 		<section layout:fragment="content">
 			<h3>Uredi uporabnika <span th:text="${uporabnik.displayName}"></span></h3>
-			<a href="">Ponastavi geslo</a>
+			<a th:href="@{'/admin/ponastavi-geslo/' + ${uporabnik.id}}" onclick="return ponastaviWarning()">Ponastavi geslo</a>
 			<form method="POST" th:action="@{/admin/uredi}" th:object="${uporabnik}" style="padding-top:10px">
 				<input type="hidden" th:field="*{id}"/>
 				<div class="form-group">
