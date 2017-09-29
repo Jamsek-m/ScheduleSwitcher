@@ -1,6 +1,7 @@
 package com.mjamsek.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,44 +9,39 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mjamsek.model.predmet.Predmet;
-import com.mjamsek.model.predmet.PredmetService;
 import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.termin.Termin;
+import com.mjamsek.model.termin.TerminService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
+import com.mjamsek.utilities.DatumLocaleUtility;
 
 @Controller
-@RequestMapping("/predmeti")
-public class PredmetiController {
+@RequestMapping("/isci-termine")
+public class IsciTerminController {
 
 	@Autowired
 	private UporabnikService upbServ;
 	
 	@Autowired
-	private PredmetService predServ;
-	
-	@Autowired
 	private SporociloService sporServ;
 	
-	@GetMapping("/moji-predmeti")
-	public String loadMojiPredmetPage(Model model) {
+	@Autowired
+	private TerminService terServ;
+	
+	@GetMapping({"/", ""})
+	public String loadIsciTerminePage(Model model, Locale loc) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		long stNeprebranih = sporServ.steviloNeprebranih();
 		model.addAttribute("stNeprebranih", stNeprebranih);
 		
-		/*List<Termin> mojiTermini = terServ.poisciSvojeTermine(trenutniUporabnik);
-		model.addAttribute("mojiTermini", mojiTermini);*/
+		List<Termin> vsiIskaniTermini = terServ.poisciIskaneTermine(trenutniUporabnik);	
+		model.addAttribute("ustrezniTermini", vsiIskaniTermini);
 		
-		List<Predmet> vsiPredmeti = predServ.poisciVse();
-		model.addAttribute("vsiPredmeti", vsiPredmeti);
+		model.addAttribute("datumUtil", new DatumLocaleUtility(null, loc));
 		
-		Termin noviTermin = new Termin();
-		model.addAttribute("noviTermin", noviTermin);
-		
-		return "predmeti/moji-predmeti-page";
+		return "termin/isci-termine-page";
 	}
-	
 	
 }

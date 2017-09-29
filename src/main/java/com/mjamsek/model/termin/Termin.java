@@ -25,9 +25,15 @@ public class Termin {
 	@Column(name="status")
 	private int status;
 	
+	public static final int STATUS_ZASEDEN = 0;
+	public static final int STATUS_PROST = 1;
+	
 	//status 0-ponujen termin, 1-iskani termin
 	@Column(name="tip")
 	private int tip;
+	
+	public static final int TIP_PONUJEN_TERMIN = 0;
+	public static final int TIP_ISKAN_TERMIN = 1;
 	
 	@ManyToOne
 	@JoinColumn(name = "upb_id")
@@ -99,4 +105,17 @@ public class Termin {
 		this.tip = tip;
 	}
 
+	@Override
+	public String toString() {
+		return String.format(
+				"Termin = { id : %s, status : %s, tip : %s, lastnik : %s, predmet : %s, cas : %s, dan : %s }", id,
+				status, tip, lastnik.getIme(), predmet.getPredmet(), cas, dan);
+	}
+	
+	public boolean primerjaj(Termin t) {
+		return this.cas == t.cas && 
+				this.dan == t.dan && 
+				t.predmet == this.predmet;
+	}
+	
 }

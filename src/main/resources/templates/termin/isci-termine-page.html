@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="layout">
+
+	<head>
+		<title></title>
+		<style>
+			#tabela th, 
+			#tabela td {
+				padding-right : 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Vsi ustrezni termini</h3>
+			<table id="tabela">
+				<tr>
+					<th>Predmet</th>
+					<th>Dan</th>
+					<th>Ura</th>
+					<th>Status</th>
+					<th>Lastnik</th>
+				</tr>
+				<tr th:each="item : ${ustrezniTermini}">
+					<td th:text="${item.predmet.predmet}"></td>
+					<td th:text="${datumUtil.vrniDan(item.dan)}"></td>
+					<td th:text="|${item.cas}:00|"></td>
+					<td th:text="${item.status}"></td>
+					<td th:text="${item.lastnik.ime}"></td>
+				</tr>
+			</table>
+		
+		
+		</section>
+	</body>
+</html>

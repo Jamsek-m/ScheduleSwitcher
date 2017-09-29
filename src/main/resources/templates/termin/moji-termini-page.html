@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="layout">
+
+	<head>
+		<title>Termini</title>
+		<style>
+			section form {
+				width:30em;
+			}
+			#tabela td, #tabela th {
+				padding-right : 30px;
+				border-bottom : 1px solid #ddd;
+			}
+			#tabela2 td, #tabela2 th {
+				padding-right : 30px;
+				border-bottom : 1px solid #ddd;
+			}
+			#tabela td, #tabela2 td {
+				padding-top : 5px;
+				padding-bottom : 5px;
+			}
+			#tabela tr:hover, #tabela2 tr:hover {
+				background-color: #f5f5f5;
+			}
+			
+			#tabela, #tabela2 {
+				margin-top : 20px;
+			}
+			#tabela a, #tabela2 a {
+				text-decoration : none;
+			}
+		</style>
+		<script>
+			function toggleForm(){
+				var forma = document.getElementById("forma");
+				$(forma).toggle("slow");
+			}
+			function toggleForm2(){
+				var forma = document.getElementById("forma2");
+				$(forma).toggle("slow");
+			}
+			function changeStatus(el){
+				var id = el.getAttribute("data-id");
+				var link = "/termin/status/"+id;
+				var req = new XMLHttpRequest();
+				req.open("POST", link, true);
+				req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+				req.onload = function(){
+					var res = JSON.parse(req.responseText);
+					if (res.status == 200) {
+						window.location.reload();
+					} else {
+						console.log("error1", req);
+					}
+				};
+				req.onerror = function(){
+					console.log("error2");
+				};
+				req.send();
+			}
+			function deleteItem(el){
+				var potrditev = confirm("Ali res želite izbrisati?");
+				if(!potrditev) return;
+				
+				var id = el.getAttribute("data-id");
+				var link = "/termin/delete/"+id;
+				var req = new XMLHttpRequest();
+				req.open("POST", link, true);
+				req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+				req.onload = function(){
+					var res = JSON.parse(req.responseText);
+					if (res.status == 200) {
+						window.location.reload();
+					} else {
+						console.log("error1", req);
+					}
+				};
+				req.onerror = function(){
+					console.log("error2");
+				};
+				req.send();
+			}
+		</script>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Moji termini</h3>
+			<button onclick="toggleForm()" class="btn btn-default" type="button">Add new</button>
+			<form method="POST" th:action="@{|/termin/nov|}" id="forma" th:object="${termin}" style="display:none">
+				<div class="form-group">
+					<label>Predmet</label>
+					<select class="form-control" th:field="*{predmet}">
+						<option th:each="pp : ${vsiPredmeti}" th:value="${pp.id}" th:text="${pp.predmet}"></option>
+					</select>
+				</div>
+				<div class="form-group" style="display:inline-block;">
+					<label>Dan</label>
+					<select class="form-control" th:field="*{dan}">
+						<option th:each="index : ${#numbers.sequence(0,4,1)}" th:value="${index}" th:text="${datumUtil.vrniDan(index)}"></option>
+					</select>
+				</div>
+				<div class="form-group" style="display:inline-block;margin-left:50px;margin-right:50px;">
+					<label>Cas</label>
+					<select class="form-control" th:field="*{cas}">
+						<option th:each="index : ${#numbers.sequence(6, 22, 1)}" th:value="${index}" th:text="|${index}:00|"></option>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			<table id="tabela">
+				<tr>
+					<th>Predmet</th>
+					<th>Dan</th>
+					<th>Ura</th>
+					<th>Status</th>
+					<th>Action</th>
+				</tr>
+				<tr th:each="item : ${mojiTermini}">
+					<td th:text="${item.predmet.predmet}"></td>
+					<td th:text="${datumUtil.vrniDan(item.dan)}"></td>
+					<td th:text="|${item.cas}:00|"></td>
+					<td th:if="${item.status} == 1">Prost</td>
+					<td th:if="${item.status} != 1">Zaseden</td>
+					<td>
+						<a href="#" th:attr="data-id=${item.id}" onclick="deleteItem(this)" th:title="'delete'">
+							<span class="glyphicon glyphicon-remove" style="color:red"></span>
+						</a>
+						<a style="margin-left:10px;" href="#" th:attr="data-id=${item.id}" onclick="changeStatus(this)" th:title="'status'">
+							<span th:if="${item.status} == 1" class="glyphicon glyphicon-eye-close"></span>
+							<span th:if="${item.status} != 1" class="glyphicon glyphicon-eye-open"></span>
+						</a>
+					</td>
+				</tr>
+			</table>
+			<h3>Iskani termini</h3>
+			<button onclick="toggleForm2()" class="btn btn-default" type="button">Add new</button>
+			<form method="POST" th:action="@{|/termin/nov-iskan|}" id="forma2" th:object="${terminIskan}" style="display:none">
+				<div class="form-group">
+					<label>Predmet</label>
+					<select class="form-control" th:field="*{predmet}">
+						<option th:each="pp : ${vsiPredmeti}" th:value="${pp.id}" th:text="${pp.predmet}"></option>
+					</select>
+				</div>
+				<div class="form-group" style="display:inline-block;">
+					<label>Dan</label>
+					<select class="form-control" th:field="*{dan}">
+						<option th:each="index : ${#numbers.sequence(0,4,1)}" th:value="${index}" th:text="${datumUtil.vrniDan(index)}"></option>
+					</select>
+				</div>
+				<div class="form-group" style="display:inline-block;margin-left:50px;margin-right:50px;">
+					<label>Cas</label>
+					<select class="form-control" th:field="*{cas}">
+						<option th:each="index : ${#numbers.sequence(6, 22, 1)}" th:value="${index}" th:text="|${index}:00|"></option>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-default">Submit</button>
+			</form>
+			<table id="tabela2">
+				<tr>
+					<th>Predmet</th>
+					<th>Dan</th>
+					<th>Ura</th>
+					<th>Status</th>
+					<th>Action</th>
+				</tr>
+				<tr th:each="item : ${iskaniTermini}">
+					<td th:text="${item.predmet.predmet}"></td>
+					<td th:text="${datumUtil.vrniDan(item.dan)}"></td>
+					<td th:text="|${item.cas}:00|"></td>
+					<td th:if="${item.status} == 1">Prost</td>
+					<td th:if="${item.status} != 1">Zaseden</td>
+					<td>
+						<a href="#" th:attr="data-id=${item.id}" onclick="deleteItem(this)" th:title="'delete'">
+							<span class="glyphicon glyphicon-remove" style="color:red"></span>
+						</a>
+						<a style="margin-left:10px;" href="#" th:attr="data-id=${item.id}" onclick="changeStatus(this)" th:title="'status'">
+							<span th:if="${item.status} == 1" class="glyphicon glyphicon-eye-close"></span>
+							<span th:if="${item.status} != 1" class="glyphicon glyphicon-eye-open"></span>
+						</a>
+					</td>
+				</tr>
+			</table>
+		
+		</section>
+	</body>
+</html>

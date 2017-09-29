@@ -38,7 +38,7 @@ public class ZahtevaServiceImpl implements ZahtevaService {
 
 	@Override
 	public List<Zahteva> vrniSvojeNereseneZahteve(Uporabnik up, int status) {
-		return zahRepo.findByProsilecAndStatus(up, STATUS_NERESENO);
+		return zahRepo.findByProsilecAndStatusOrderByDatumProsnjeDesc(up, STATUS_NERESENO);
 	}
 
 	@Override
@@ -65,6 +65,16 @@ public class ZahtevaServiceImpl implements ZahtevaService {
 		zahteva.setProsilec(upbServ.dobiTrenutnegaUporabnika());
 		
 		zahRepo.save(zahteva);
+	}
+
+	@Override
+	public Zahteva vrniZahtevoZId(long id) {
+		return zahRepo.findById(id);
+	}
+
+	@Override
+	public long vrniSteviloNeresenihZaMod() {
+		return zahRepo.findNumberOfUnsolvedRequestsForMods();
 	}
 
 }

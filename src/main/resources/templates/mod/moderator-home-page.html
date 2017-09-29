@@ -76,6 +76,10 @@
 	<body>
 		<section layout:fragment="content">
 			<h3>Moderator homepage</h3>
+			<div class="col-sm-12" th:if="${stNeresenih} > 0" style="color:red;font-size:16px;"> 
+				<span>st neresenih: </span>
+				<a href="/moderator/neresene-zahteve" th:text="${stNeresenih}"></a>
+			</div>
 			<div class="col-sm-12">
 				<h4 style="padding-bottom:10px;">Uredi</h4>
 				<div class="col-sm-4">

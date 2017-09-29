@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -84,7 +85,7 @@ public class UporabnikController {
 		Zahteva zahteva = new Zahteva();
 		model.addAttribute("zahteva", zahteva);
 		
-		return "mod/nova-zahteva-page";
+		return "uporabnik/nova-zahteva-page";
 	}
 	
 	@PostMapping("/nova-zahteva")
@@ -102,7 +103,20 @@ public class UporabnikController {
 		
 		List<Zahteva> zahteve = zahServ.vrniSvojeZahteve(trenutniUporabnik);
 		model.addAttribute("zahteve", zahteve);
-		return "";
+		return "uporabnik/moje-zahteve-page";
+	}
+	
+	@GetMapping("/zahteva/{id}")
+	public String loadZahtevaPage(@PathVariable("id") long id, Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
+		Zahteva zahteva = zahServ.vrniZahtevoZId(id);
+		model.addAttribute("zahteva", zahteva);
+		
+		return "uporabnik/zahteva-page";
 	}
 	
 }

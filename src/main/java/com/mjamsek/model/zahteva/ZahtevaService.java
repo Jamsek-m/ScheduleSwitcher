@@ -13,6 +13,8 @@ public interface ZahtevaService {
 	
 	public List<Zahteva> vrniVse();
 	
+	public Zahteva vrniZahtevoZId(long id);
+	
 	public List<Zahteva> vrniSvojeZahteve(Uporabnik up);
 	
 	public List<Zahteva> vrniNereseneZahteve(int status);
@@ -26,5 +28,7 @@ public interface ZahtevaService {
 	public void spremeniStatusZahteve(long id, int status);
 	
 	public void posljiZahtevo(Zahteva zahteva);
+	
+	public long vrniSteviloNeresenihZaMod();
 	
 }

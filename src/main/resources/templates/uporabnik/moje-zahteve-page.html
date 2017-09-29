@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="Layout">
+
+	<head>
+		<title th:text="#{index.title}"></title>
+		<style>
+			.item {
+				border: 1px solid #66ccff;
+				padding-top : 10px;
+				padding-bottom : 5px;
+				margin-bottom : 2px;
+				border-radius : 5px;
+				width: 60%;
+			}
+			.item a {
+				text-decoration: none;
+				margin-left : 15px;
+			}
+			.item a:hover {
+				text-decoration: none;
+			}
+			.item .vsebina {
+				margin-left:25px;
+				width: 90%;
+				display : inline-block;
+				text-overflow : ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+		</style>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Moje zahteve</h3>
+			<div id="zahteve">
+				<div th:each="item : ${zahteve}" class="item">
+					<a th:href="@{'/uporabnik/zahteva/' + ${item.id}}">
+						<span class="vsebina" th:text="${#dates.format(item.datumProsnje, 'dd.MM.yyyy HH:mm')} + '&#160;&#160;&#160;&#160;' + ${item.vsebina}"></span>
+					</a>
+				</div>			
+			</div>
+		</section>
+	</body>
+</html>

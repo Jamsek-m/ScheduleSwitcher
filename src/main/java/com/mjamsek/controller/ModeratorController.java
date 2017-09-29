@@ -20,7 +20,6 @@ import com.mjamsek.model.predmet.PredmetService;
 import com.mjamsek.model.sporocilo.SporociloService;
 import com.mjamsek.model.uporabnik.Uporabnik;
 import com.mjamsek.model.uporabnik.UporabnikService;
-import com.mjamsek.model.zahteva.TipZahteve;
 import com.mjamsek.model.zahteva.Zahteva;
 import com.mjamsek.model.zahteva.ZahtevaService;
 import com.mjamsek.wrappers.EditPredmetWrapper;
@@ -59,6 +58,9 @@ public class ModeratorController {
 		
 		model.addAttribute("novPredmetObj", new Predmet());
 		model.addAttribute("novaEnotaObj", new Enota());
+		
+		long stNeresenih = zahServ.vrniSteviloNeresenihZaMod();
+		model.addAttribute("stNeresenih", stNeresenih);
 		
 		return "mod/moderator-home-page";
 	}

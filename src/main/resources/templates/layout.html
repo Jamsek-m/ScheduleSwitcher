@@ -11,26 +11,41 @@
 			.inline_a {
 				display : inline;
 			}
-			select#jezik {
-			    -webkit-appearance: none;
-			    -moz-appearance: none;
-			    text-indent: 1px;
-			    text-overflow: '';
-			    width:34px;
+			.dropdown-menu {
+				min-width: 40px;
+			}
+			.lang-selector img {
+				border : 1px solid black;
 			}
 		</style>
 		<script>
-			function spremeni_jezik(item){
-				var jezik = item.value;
-				item.setAttribute("style", "background-repeat: no-repeat; background-image : url('/images/" + jezik + "-lang32.png')");
+			function vrniElementZLocale(locale){
+				var wrapper = document.createElement("SPAN");
+				
+				var img = document.createElement("IMG");
+				img.src = "/images/"+locale+"-lang32.png";
+				img.style.border = "1px solid black";
+				var span = document.createElement("SPAN");
+				span.classList.add("caret");
+	
+				wrapper.appendChild(img);
+				wrapper.appendChild(span);
+				return wrapper.innerHTML;
+			}
+			
+			function spremeni_jezik(){
+				var jezik = this.getAttribute("data-lang");
 				window.location.href = window.location.pathname + "?locale=" + jezik;
 			}
+			
 			function init(){
-				var item = document.getElementById("jezik");
-				var jezik = getCookie("locale");
-				item.value = jezik;
-				item.setAttribute("style", "background-repeat: no-repeat; background-image : url('/images/" + jezik + "-lang32.png')");
+				var selektorji = Array.from(document.getElementsByClassName("lang-selector"));
+				selektorji.map( el => el.addEventListener("click", spremeni_jezik));
+				var jezik = getCookie("locale") ? getCookie("locale") : "sl";
+				var gumb = document.getElementById("lang-btn");
+				gumb.innerHTML = vrniElementZLocale(jezik);
 			}
+			
 			function getCookie(cname) {
 			    var name = cname + "=";
 			    var decodedCookie = decodeURIComponent(document.cookie);
@@ -85,10 +100,23 @@
 							</a>
 						</li>
 						<li style="margin-right:20px;padding-top:10px">
-							<select id="jezik" onchange="spremeni_jezik(this)">
-								<option th:style="'background-repeat: no-repeat; background-image:url(' + @{/images/en-lang32.png} + ')'" value="en"></option>
-								<option th:style="'background-repeat: no-repeat; background-image:url(' + @{/images/sl-lang32.png} + ')'" value="sl"></option>
-							</select>
+							 <span class="btn-group">
+							 	<a id="lang-btn" class="dropdown-toggle" data-toggle="dropdown" href="#">
+							 		<img src="/images/sl-lang32.png" style="border:1px solid black"/><span class="caret"></span>
+							 	</a>
+							 	<ul class="dropdown-menu">
+									<li>
+										<a href="javascript:void(0);" data-lang="en" class="lang-selector">
+											<img src="/images/en-lang32.png"/>
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0);" data-lang="sl" class="lang-selector">
+											<img src="/images/sl-lang32.png"/>
+										</a>
+									</li>						 	
+							 	</ul>
+							 </span>
 						</li> 
 				    </ul>
 				</div>
@@ -104,8 +132,8 @@
                     		<span style="color:red" th:if="${stNeprebranih} > 0" th:text="'(' + ${stNeprebranih} + ')'"></span>
                     	</a>
                     </li>
-                    <li><a href="javascript:;">Moji termini</a></li>
-                    <li><a href="javascript:;">Išči termine</a></li>
+                    <li><a href="/termin">Moji termini</a></li>
+                    <li><a href="/isci-termine">Išči termine</a></li>
                     <li class="nav-divider"></li>
                     <li>
                     	<a th:if="${trenutniUporabnik} != null" href="/logout"><i class="glyphicon glyphicon-off"></i>&#160;<span th:text="#{webpage.nav.logout}"></span></a>
