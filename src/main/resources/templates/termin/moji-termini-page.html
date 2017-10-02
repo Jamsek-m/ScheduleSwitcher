@@ -94,7 +94,7 @@
 				<div class="form-group">
 					<label>Predmet</label>
 					<select class="form-control" th:field="*{predmet}">
-						<option th:each="pp : ${vsiPredmeti}" th:value="${pp.id}" th:text="${pp.predmet}"></option>
+						<option th:each="pp : ${vsiPredmeti}" th:value="${pp.id}" th:text="${pp.predmet} + ' - ' + ${pp.enota.oznaka}"></option>
 					</select>
 				</div>
 				<div class="form-group" style="display:inline-block;">
@@ -142,7 +142,7 @@
 				<div class="form-group">
 					<label>Predmet</label>
 					<select class="form-control" th:field="*{predmet}">
-						<option th:each="pp : ${vsiPredmeti}" th:value="${pp.id}" th:text="${pp.predmet}"></option>
+						<option th:each="pp : ${vsiPredmeti}" th:value="${pp.id}" th:text="${pp.predmet} + ' - ' + ${pp.enota.oznaka}"></option>
 					</select>
 				</div>
 				<div class="form-group" style="display:inline-block;">

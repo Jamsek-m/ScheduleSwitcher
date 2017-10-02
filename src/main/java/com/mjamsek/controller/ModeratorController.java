@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -149,17 +150,30 @@ public class ModeratorController {
 		return "redirect:/moderator/";
 	}
 	
-	@GetMapping("/zahteve")
+	@GetMapping("/neresene-zahteve")
 	public String loadZahtevePage(Model model) {
 		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
 		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
 		long stNeprebranih = sporServ.steviloNeprebranih();
 		model.addAttribute("stNeprebranih", stNeprebranih);
 		
-		List<Zahteva> zahteve = zahServ.vrniVse();
+		List<Zahteva> zahteve = zahServ.vrniNereseneZahteveZaModa();
 		model.addAttribute("zahteve", zahteve);
 		
 		return "mod/zahteve-page";
+	}
+	
+	@GetMapping("/zahteva/{id}")
+	public String loadZahteva(@PathVariable("id") long id, Model model) {
+		Uporabnik trenutniUporabnik = upbServ.dobiTrenutnegaUporabnika();
+		model.addAttribute("trenutniUporabnik", trenutniUporabnik);
+		long stNeprebranih = sporServ.steviloNeprebranih();
+		model.addAttribute("stNeprebranih", stNeprebranih);
+		
+		Zahteva zahteva = zahServ.vrniZahtevoZId(id);
+		model.addAttribute("zahteva", zahteva);
+		
+		return "mod/zahteva-page";
 	}
 	
 }

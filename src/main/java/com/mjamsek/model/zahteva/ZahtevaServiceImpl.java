@@ -77,4 +77,9 @@ public class ZahtevaServiceImpl implements ZahtevaService {
 		return zahRepo.findNumberOfUnsolvedRequestsForMods();
 	}
 
+	@Override
+	public List<Zahteva> vrniNereseneZahteveZaModa() {
+		return zahRepo.findAllUnsolvedRequestsForMods();
+	}
+
 }

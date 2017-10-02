@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  		layout:decorate="~{layout}"
+  		layout:decorator="layout">
+
+	<head>
+		<title></title>
+		<style>
+			.vsebina {
+				display: block;
+				width : 200px;
+				white-space: nowrap;
+				overflow:hidden;
+    			text-overflow:ellipsis;
+			}
+			.zahteva {
+				cursor : pointer;
+			}
+			.zahteva:hover {
+				background-color : #f2f2f2;
+			}
+		</style>
+		<script>
+			function odpriZahtevo(el){
+				id = el.getAttribute("data-id");
+				window.location.href = "/moderator/zahteva/" + id;
+			}
+		</script>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<h3>Neresene zahteve</h3>
+			
+			<div class="zahteva" style="padding-bottom:5px;" th:each="item : ${zahteve}" 
+				th:attr="data-id=${item.id}" onclick="odpriZahtevo(this)">
+				<span th:text="${item.prosilec.ime}"></span>
+				<span class="vsebina" th:text="${item.vsebina}"></span>
+			</div>
+		</section>
+	</body>
+</html>

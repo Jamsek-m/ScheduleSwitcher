@@ -31,4 +31,6 @@ public interface ZahtevaService {
 	
 	public long vrniSteviloNeresenihZaMod();
 	
+	public List<Zahteva> vrniNereseneZahteveZaModa();
+	
 }

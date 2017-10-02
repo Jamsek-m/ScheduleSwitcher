@@ -11,6 +11,11 @@
 			#tabela th, 
 			#tabela td {
 				padding-right : 20px;
+				padding-top : 5px;
+				padding-bottom : 5px;
+			}
+			#tabela tr:hover {
+				background-color : #f5f5f5;
 			}
 		</style>
 	</head>
@@ -29,7 +34,8 @@
 					<td th:text="${item.predmet.predmet}"></td>
 					<td th:text="${datumUtil.vrniDan(item.dan)}"></td>
 					<td th:text="|${item.cas}:00|"></td>
-					<td th:text="${item.status}"></td>
+					<td th:if="${item.status} == 1">Prost</td>
+					<td th:if="${item.status} != 1">Zaseden</td>
 					<td th:text="${item.lastnik.ime}"></td>
 				</tr>
 			</table>

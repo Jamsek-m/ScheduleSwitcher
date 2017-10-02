@@ -3,7 +3,6 @@ package com.mjamsek.model.termin;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import com.mjamsek.model.predmet.Predmet;
 import com.mjamsek.model.uporabnik.Uporabnik;

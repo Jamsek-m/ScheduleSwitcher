@@ -6,11 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mjamsek.model.predmet.Predmet;
-import com.mjamsek.model.predmet.PredmetService;
 import com.mjamsek.model.uporabnik.Uporabnik;
-import com.mjamsek.model.uporabnik.UporabnikService;
-import com.mjamsek.utilities.DanUra;
 
 @Service("terminService")
 public class TerminServiceImpl implements TerminService {

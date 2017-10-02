@@ -48,7 +48,6 @@ public class InitUtility {
 			vlRepo.save(MOD);
 			vlRepo.save(ADMIN);
 			vlRepo.save(USER);
-			System.err.println("======= init vloge =======");
 		}
 		
 		//init enot
@@ -62,7 +61,6 @@ public class InitUtility {
 		if(stEnot == 0) {
 			enRepo.save(UNI);
 			enRepo.save(VSS);
-			System.err.println("======= init enote =======");
 		}
 		
 		//init admin racuna
@@ -83,7 +81,6 @@ public class InitUtility {
 		admin.setEnota(UNI);
 		if(stUporabnikov == 0) {
 			upbRepo.save(admin);
-			System.err.println("======= init admina =======");
 		}
 		
 		int stTipov = tipRepo.findAll().size();
@@ -92,9 +89,7 @@ public class InitUtility {
 		zaMod.setSkrbnik(MOD);
 		if(stTipov == 0) {
 			tipRepo.save(zaMod);
-			System.err.println("======= init tipa zahtev =======");
 		}
-		System.err.println("\n\n");
 	}
 	
 }

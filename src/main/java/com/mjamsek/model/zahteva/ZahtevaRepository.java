@@ -27,4 +27,7 @@ public interface ZahtevaRepository extends JpaRepository<Zahteva, Long> {
 	@Query(value="select count(*) as rez from zahteva z inner join sif_zahteva s on s.id_tip_zahteve=z.tip_zahteve where z.status=0 and s.skrbnik = (select vloga_id from vloga where vloga='MOD')", nativeQuery=true)
 	public long findNumberOfUnsolvedRequestsForMods();
 	
+	@Query(value="select z.* from zahteva z inner join sif_zahteva s on s.id_tip_zahteve=z.tip_zahteve where z.status=0 and s.skrbnik = (select vloga_id from vloga where vloga='MOD');", nativeQuery=true)
+	public List<Zahteva> findAllUnsolvedRequestsForMods();
+	
 }
